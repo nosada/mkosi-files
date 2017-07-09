@@ -1,0 +1,6 @@
+#!/bin/bash
+
+mv -f /pacman.conf /etc/pacman.conf
+mv -f /securetty /etc/securetty
+yes | pacman -Scc
+pacman-optimize

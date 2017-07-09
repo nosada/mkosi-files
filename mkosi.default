@@ -1,0 +1,10 @@
+[Distribution]
+Distribution=arch
+
+[Output]
+Format=tar
+XZ=yes
+Output=corespawn.tar.xz
+
+[Packages]
+Packages=python
