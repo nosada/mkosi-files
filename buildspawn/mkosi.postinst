@@ -1,0 +1,13 @@
+#!/bin/bash
+
+NORMAL_USER="builder"
+useradd -m ${NORMAL_USER}
+echo ${NORMAL_USER} | chpasswd
+
+mv -f /pacman.conf /etc/pacman.conf
+mv -f /makepkg.conf /etc/makepkg.conf
+mv -f /securetty /etc/securetty
+
+yes | pacman -Rscnu systemd-sysvcompat
+yes | pacman -Scc
+pacman-optimize

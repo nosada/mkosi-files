@@ -2,5 +2,7 @@
 
 mv -f /pacman.conf /etc/pacman.conf
 mv -f /securetty /etc/securetty
+
+yes | pacman -Rscnu systemd-sysvcompat
 yes | pacman -Scc
 pacman-optimize

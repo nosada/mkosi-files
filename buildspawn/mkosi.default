@@ -1,0 +1,10 @@
+[Distribution]
+Distribution=arch
+
+[Output]
+Format=tar
+XZ=yes
+Output=buildspawn.tar.xz
+
+[Packages]
+Packages=base-devel optipng upx sudo
