@@ -1,0 +1,12 @@
+#!/bin/bash
+
+mv -f /pacman.conf /etc/pacman.conf
+mv -f /securetty /etc/securetty
+mv -f /torrc /etc/tor/torrc
+mv -f /privoxy.config /etc/privoxy/config
+
+systemctl enable tor.service
+systemctl enable privoxy.service
+
+yes | pacman -Scc
+pacman-optimize

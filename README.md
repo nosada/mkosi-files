@@ -7,3 +7,4 @@ After cloning this repository, `cd` to directory which you want then run `mkosi`
 # Containers on this repository
 - corespawn: basic container with neovim
 - buildspawn: basic container for building archlinux packages
+- torspawn: running tor and privoxy inside container

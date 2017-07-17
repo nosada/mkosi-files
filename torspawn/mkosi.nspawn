@@ -1,0 +1,10 @@
+[Exec]
+PrivateUsers=true
+NotifyReady=true
+
+[Files]
+TemporaryFileSystem=/var
+
+[Network]
+Private=yes
+VirtualEthernet=yes

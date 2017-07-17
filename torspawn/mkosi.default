@@ -1,0 +1,10 @@
+[Distribution]
+Distribution=arch
+
+[Output]
+Format=tar
+XZ=yes
+Output=torspawn.tar.xz
+
+[Packages]
+Packages=polkit tor privoxy
