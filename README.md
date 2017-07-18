@@ -11,19 +11,25 @@ $ cd <container_directory>
 # make
 ```
 
-## Importing build image (via machinectl, and put nspawn config to /etc/systemd/nspawn/)
+## Importing built image
+- importing image via machinectl
+- putting nspawn config to /etc/systemd/nspawn/
+
 ```
 $ cd <container_directory>
 # make install
 ```
 
-## Remove container image (via machinectl)
+## Remove container image
+- removing image via machinectl
+  - imply deletion of nspawn config
+
 ```
 $ cd <container_directory>
 # make uninstall
 ```
 
-## Remove container image (via machinectl)
+## Clean built files
 ```
 $ cd <container_directory>
 # make clean
@@ -31,6 +37,6 @@ $ cd <container_directory>
 
 
 # Containers on this repository
-- `corespawn/`: basic container with neovim
+- `corespawn/`: basic container
 - `buildspawn/`: basic container for building archlinux packages
 - `torspawn/`: running tor and privoxy inside container
