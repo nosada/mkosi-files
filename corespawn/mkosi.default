@@ -5,3 +5,6 @@ Distribution=arch
 Format=tar
 XZ=yes
 Output=corespawn.tar.xz
+
+[Packages]
+Packages=reflector

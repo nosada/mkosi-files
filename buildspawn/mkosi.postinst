@@ -11,6 +11,8 @@ sed -i -e \
 mv -f /pacman.conf /etc/pacman.conf
 mv -f /makepkg.conf /etc/makepkg.conf
 mv -f /securetty /etc/securetty
+mkdir -p /etc/pacman.d/hooks
+mv -f /mirrorupgrade.hook /etc/pacman.d/hooks/mirrorupgrade.hook
 
 yes | pacman -Scc
 pacman-optimize

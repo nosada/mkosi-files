@@ -7,4 +7,4 @@ XZ=yes
 Output=buildspawn.tar.xz
 
 [Packages]
-Packages=base-devel optipng upx sudo
+Packages=base-devel optipng upx sudo reflector
