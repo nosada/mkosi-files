@@ -1,5 +1,12 @@
 #!/bin/bash
 
+UNNEEDED_BASE_PKGS="nano \
+	pciutils \
+	usbutils"
+yes | pacman -Rscnu ${UNNEEDED_BASE_PKGS}
+yes | pacman -Scc
+pacman-optimize
+
 mv -f /pacman.conf /etc/pacman.conf
 mv -f /securetty /etc/securetty
 mv -f /torrc /etc/tor/torrc
@@ -7,6 +14,3 @@ mv -f /privoxy.config /etc/privoxy/config
 
 systemctl enable tor.service
 systemctl enable privoxy.service
-
-yes | pacman -Scc
-pacman-optimize

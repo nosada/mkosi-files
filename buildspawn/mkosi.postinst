@@ -1,5 +1,12 @@
 #!/bin/bash
 
+UNNEEDED_BASE_PKGS="nano \
+	pciutils \
+	usbutils"
+yes | pacman -Rscnu ${UNNEEDED_BASE_PKGS}
+yes | pacman -Scc
+pacman-optimize
+
 NORMAL_USER="builder"
 useradd -m ${NORMAL_USER}
 gpasswd -a ${NORMAL_USER} wheel
@@ -13,6 +20,3 @@ mv -f /makepkg.conf /etc/makepkg.conf
 mv -f /securetty /etc/securetty
 mkdir -p /etc/pacman.d/hooks
 mv -f /mirrorupgrade.hook /etc/pacman.d/hooks/mirrorupgrade.hook
-
-yes | pacman -Scc
-pacman-optimize
