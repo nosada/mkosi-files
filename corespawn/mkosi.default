@@ -7,4 +7,4 @@ XZ=yes
 Output=corespawn.tar.xz
 
 [Packages]
-Packages=reflector
+Packages=reflector polkit
