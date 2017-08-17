@@ -1,5 +1,5 @@
 [Exec]
-PrivateUsers=false
+PrivateUsers=true
 NotifyReady=true
 
 [Files]
