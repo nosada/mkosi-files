@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# remove unneeded packages
 UNNEEDED_BASE_PKGS="nano \
 	pciutils \
 	usbutils"
@@ -7,10 +8,17 @@ yes | pacman -Rscnu ${UNNEEDED_BASE_PKGS}
 yes | pacman -Scc
 pacman-optimize
 
+# install required config
+mv -f /locale.gen /etc/locale.gen
+mv -f /locale.conf /etc/locale.conf
 mv -f /pacman.conf /etc/pacman.conf
 mv -f /securetty /etc/securetty
 mv -f /torrc /etc/tor/torrc
 mv -f /privoxy.config /etc/privoxy/config
 
+# prepare locale
+locale-gen
+
+# enable required services
 systemctl enable tor.service
 systemctl enable privoxy.service

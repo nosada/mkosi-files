@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# remove unneeded packages
 UNNEEDED_BASE_PKGS="nano \
 	pciutils \
 	usbutils"
@@ -7,7 +8,13 @@ yes | pacman -Rscnu ${UNNEEDED_BASE_PKGS}
 yes | pacman -Scc
 pacman-optimize
 
+# install required config
+mv -f /locale.gen /etc/locale.gen
+mv -f /locale.conf /etc/locale.conf
 mv -f /pacman.conf /etc/pacman.conf
 mv -f /securetty /etc/securetty
 mkdir -p /etc/pacman.d/hooks
 mv -f /mirrorupgrade.hook /etc/pacman.d/hooks/mirrorupgrade.hook
+
+# prepare locale
+locale-gen
