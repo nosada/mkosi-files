@@ -40,3 +40,4 @@ $ cd <container_directory>
 - `corespawn/`: basic container
 - `buildspawn/`: basic container for building archlinux packages
 - `torspawn/`: running tor and privoxy inside container
+- `sngskspawn/`: content of https://sngsk.info
