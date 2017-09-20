@@ -1,0 +1,45 @@
+#!/bin/bash
+
+# cf.
+# - https://github.com/tootsuite/documentation/blob/master/Running-Mastodon/Production-guide.md
+# - https://wiki.archlinux.org/index.php/Mastodon
+
+RUBY_VERSION="2.4.2"
+
+dhcpcd
+
+# add mastodon user and use it
+useradd -m mastodon
+su - mastodon
+
+git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+cd ~/.rbenv && src/configure && make -C src
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+# Restart shell
+exec bash
+# Check if rbenv is correctly installed
+type rbenv
+# Install ruby-build as rbenv plugin
+git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+
+# install ruby via ruby-build
+rbenv install ${RUBY_VERSION}
+rbenv global ${RUBY_VERSION}
+
+# Return to mastodon user's home directory
+cd ~
+# Clone the mastodon git repository into ~/live
+git clone https://github.com/tootsuite/mastodon.git live
+# Change directory to ~live
+cd ~/live
+# Checkout to the latest stable branch
+git checkout $(git tag -l | grep -v 'rc[0-9]*$' | sort -V | tail -n 1)
+# Install bundler
+gem install bundler
+# Use bundler to install the rest of the Ruby dependencies
+bundle install --deployment --without development test
+# Use yarn to install node.js dependencies
+yarn install --pure-lockfile
+
+cp /mastodon.env.production ~/live/.env.production
