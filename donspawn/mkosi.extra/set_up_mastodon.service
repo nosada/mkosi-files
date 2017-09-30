@@ -1,0 +1,6 @@
+[Unit]
+Description=set up mastodon on boot
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/set_up_mastodon.sh
