@@ -13,6 +13,7 @@ mv -f /locale.gen /etc/locale.gen
 mv -f /locale.conf /etc/locale.conf
 mv -f /pacman.conf /etc/pacman.conf
 mv -f /securetty /etc/securetty
+mv -f /nsswitch.conf /etc/nsswitch.conf
 mkdir -p /etc/pacman.d/hooks
 mv -f /mirrorupgrade.hook /etc/pacman.d/hooks/mirrorupgrade.hook
 
@@ -24,15 +25,26 @@ locale-gen
 # - https://github.com/tootsuite/documentation/blob/master/Running-Mastodon/Production-guide.md
 # - https://wiki.archlinux.org/index.php/Mastodon
 
+MASTODON_REPOSITORY="https://github.com/tootsuite/mastodon.git"
 MASTODON_DIRECTORY="/opt/mastodon"
-
-mv -f /mastodon ${MASTODON_DIRECTORY}
+git clone ${MASTODON_REPOSITORY} ${MASTODON_DIRECTORY}
 mv -f /mastodon.env.production ${MASTODON_DIRECTORY}/.env.production
 
-mv -f /set_up_mastodon.sh /usr/local/bin/set_up_mastodon.sh
-mv -f /set_up_mastodon.service /etc/systemd/system/set_up_mastodon.service
-systemctl daemon-reload
-systemctl enable set_up_mastodon.service
+cd ${MASTODON_DIRECTORY}
+MASTODON_VERSION=`git tag -l | grep -v 'rc[0-9]*$' | sort -V | tail -n 1`
+git checkout ${MASTODON_VERSION}
+bundle install --system --without 'development' 'test'
+yarn install --pure-lockfile
 
+MASTODON_SERVICES=("web" "sidekiq" "streaming")
+for SERVICE in ${MASTODON_SERVICES[@]};
+do
+	mv /mastodon-${SERVICE}.service /etc/systemd/system/mastodon-${SERVICE}.service
+	systemctl enable mastodon-${SERVICE}
+done
 mv -f /post_installation.sh /usr/local/bin/post_installation.sh
 mv -f /daily_task.sh /usr/local/bin/daily_task.sh
+mv -f /mastodon-daily-task.service /etc/systemd/system/mastodon-daily-task.service
+mv -f /mastodon-daily-task.timer /etc/systemd/system/mastodon-daily-task.timer
+systemctl enable mastodon-daily-task.service
+systemctl enable mastodon-daily-task.timer

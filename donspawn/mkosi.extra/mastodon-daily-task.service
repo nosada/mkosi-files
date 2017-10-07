@@ -1,0 +1,11 @@
+[Unit]
+Description=Daily Mastodon jobs
+RefuseManualStart=no
+RefuseManualStop=yes
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/daily_task.sh
+
+[Install]
+WantedBy=multi-user.target
