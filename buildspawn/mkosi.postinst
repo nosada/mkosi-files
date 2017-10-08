@@ -14,6 +14,7 @@ mv -f /locale.conf /etc/locale.conf
 mv -f /pacman.conf /etc/pacman.conf
 mv -f /makepkg.conf /etc/makepkg.conf
 mv -f /securetty /etc/securetty
+mv -f /nsswitch.conf /etc/nsswitch.conf
 mkdir -p /etc/pacman.d/hooks
 mv -f /mirrorupgrade.hook /etc/pacman.d/hooks/mirrorupgrade.hook
 

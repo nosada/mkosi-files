@@ -13,6 +13,7 @@ mv -f /locale.gen /etc/locale.gen
 mv -f /locale.conf /etc/locale.conf
 mv -f /pacman.conf /etc/pacman.conf
 mv -f /securetty /etc/securetty
+mv -f /nsswitch.conf /etc/nsswitch.conf
 mv -f /torrc /etc/tor/torrc
 mv -f /privoxy.config /etc/privoxy/config
 
