@@ -25,26 +25,86 @@ locale-gen
 # - https://github.com/tootsuite/documentation/blob/master/Running-Mastodon/Production-guide.md
 # - https://wiki.archlinux.org/index.php/Mastodon
 
-MASTODON_REPOSITORY="https://github.com/tootsuite/mastodon.git"
+# define parameters
 MASTODON_DIRECTORY="/opt/mastodon"
-git clone ${MASTODON_REPOSITORY} ${MASTODON_DIRECTORY}
-mv -f /mastodon.env.production ${MASTODON_DIRECTORY}/.env.production
+MASTODON_SCRIPTS_DIRECTORY="/opt/bin"
+MASTODON_USER="mastodon"
 
+# git-clone mastodon repository
+if [ -e /mastodon ]; then
+	mv /mastodon ${MASTODON_DIRECTORY}
+else
+	MASTODON_REPOSITORY="https://github.com/tootsuite/mastodon.git"
+	git clone ${MASTODON_REPOSITORY} ${MASTODON_DIRECTORY}
+fi
+if [ -e /mastodon.env.production ]; then
+	mv -f /mastodon.env.production ${MASTODON_DIRECTORY}/.env.production
+fi
+
+# add 'mastodon' user and chown ${MASTODON_DIRECTORY}
+useradd ${MASTODON_USER} -d ${MASTODON_DIRECTORY}
+gpasswd -a ${MASTODON_USER} wheel
+echo "${MASTODON_USER}:${MASTODON_USER}" | chpasswd
+chown "${MASTODON_USER}:${MASTODON_USER}" ${MASTODON_DIRECTORY} -R
+
+# check out stable version of mastodon and install requirements for mastodon
 cd ${MASTODON_DIRECTORY}
 MASTODON_VERSION=`git tag -l | grep -v 'rc[0-9]*$' | sort -V | tail -n 1`
 git checkout ${MASTODON_VERSION}
-bundle install --system --without 'development' 'test'
-yarn install --pure-lockfile
+sudo -u ${MASTODON_USER} bundle install --deployment --without 'development' 'test'
+sudo -u ${MASTODON_USER} gem install puma
+sudo -u ${MASTODON_USER} yarn install --pure-lockfile
+sudo -u ${MASTODON_USER} RAILS_ENV=production bundle exec rails assets:precompile
 
+# install mastodon-related systemd services
 MASTODON_SERVICES=("web" "sidekiq" "streaming")
 for SERVICE in ${MASTODON_SERVICES[@]};
 do
 	mv /mastodon-${SERVICE}.service /etc/systemd/system/mastodon-${SERVICE}.service
 	systemctl enable mastodon-${SERVICE}
 done
-mv -f /post_installation.sh /usr/local/bin/post_installation.sh
-mv -f /daily_task.sh /usr/local/bin/daily_task.sh
+
+# install operational scripts / services to /opt/bin
+if [ ! -d ${MASTODON_SCRIPTS_DIRECTORY} ]; then
+	mkdir ${MASTODON_SCRIPTS_DIRECTORY}
+	chown "${MASTODON_USER}:${MASTODON_USER}" ${MASTODON_SCRIPTS_DIRECTORY} -R
+fi
+mv -f /post_installation.sh ${MASTODON_SCRIPTS_DIRECTORY}/post_installation.sh
+mv -f /daily_task.sh ${MASTODON_SCRIPTS_DIRECTORY}/daily_task.sh
 mv -f /mastodon-daily-task.service /etc/systemd/system/mastodon-daily-task.service
 mv -f /mastodon-daily-task.timer /etc/systemd/system/mastodon-daily-task.timer
 systemctl enable mastodon-daily-task.service
 systemctl enable mastodon-daily-task.timer
+
+# set up Redis
+systemctl enable redis
+if [ ! -e /var/lib/redis ]; then
+	mkdir /var/lib/redis
+fi
+chown redis:redis /var/lib/redis/ -R
+
+# set up PostgreSQL
+systemctl enable postgresql
+if [ -e /postgres ]; then
+	echo "use existing PostgreSQL"
+	if [ -e /var/lib/postgres ]; then
+		rm -rf /var/lib/postgres
+		mv /postgres /var/lib/postgres
+		chown postgres:postgres /var/lib/postgres/ -R
+	fi
+else
+	echo "create new DB to PostgreSQL"
+	PGROOT=/var/lib/postgres
+	chown postgres:postgres ${PGROOT} -R
+	/usr/bin/postgresql-check-db-dir ${PGROOT}/data
+	/usr/bin/pg_ctl -s -D ${PGROOT}/data start -w -t 120 &
+	if [ -e ${MASTODON_DIRECTORY}/.env.production ]; then
+		MASTODON_DB_USER=`cat ${MASTODON_DIRECTORY}/.env.production | grep DB_USER | cut -d '=' -f 2`
+		MASTODON_DB_NAME=`cat ${MASTODON_DIRECTORY}/.env.production | grep DB_NAME | cut -d '=' -f 2`
+	else
+		MASTODON_DB_USER=${MASTODON_USER}
+		MASTODON_DB_NAME=${MASTODON_USER}
+	fi
+	sudo -u postgres createuser ${MASTODON_DB_USER}
+	sudo -u postgres createdb ${MASTODON_DB_NAME}
+fi
