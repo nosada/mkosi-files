@@ -9,7 +9,7 @@ As a result of my poor skills, this becomes complicated. So I decide to write RE
 ### New Mastodon instance
 You must create `.env.production` and put it to `mkosi.extra` as `mastodon.env.production`.
 
-`env.production` is config of Mastodon. See https://github.com/tootsuite/documentation/blob/master/Running-Mastodon/Production-guide.md for more information & contents about it
+`.env.production` is config of Mastodon. See https://github.com/tootsuite/documentation/blob/master/Running-Mastodon/Production-guide.md for more information & contents.
 
 After crerating `env.production`, simply run below:
 ```
@@ -17,6 +17,8 @@ $ sudo make			# create nspawn container
 $ sudo make install 		# install nspawn container
 $ machinectl start mstdnspawn	# run Mastodon instance
 ```
+
+You must create DB for mastodon after started container.
 
 ### Use existing content in Mastodon instance
 In this case, mastodon code tree and  content of PostgreSQL DB are needed:
@@ -32,6 +34,16 @@ $ sudo make			# create nspawn container
 $ sudo make install 		# install nspawn container
 $ machinectl start mstdnspawn	# run Mastodon instance
 ```
+
+### After started container
+Do below:
+```
+$ machinectl login mstdonspawn
+(login to container as 'mastodon')
+$ sudo /opt/bin/post_installation.sh
+```
+
+Accounts for loggin in to container is defined at `mkosi.postinst`.
 
 
 ## Notes

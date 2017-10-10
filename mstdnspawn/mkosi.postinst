@@ -44,6 +44,7 @@ fi
 # add 'mastodon' user and chown ${MASTODON_DIRECTORY}
 useradd ${MASTODON_USER} -d ${MASTODON_DIRECTORY}
 gpasswd -a ${MASTODON_USER} wheel
+sed -e 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/' /etc/sudoers -i
 echo "${MASTODON_USER}:${MASTODON_USER}" | chpasswd
 chown "${MASTODON_USER}:${MASTODON_USER}" ${MASTODON_DIRECTORY} -R
 
@@ -86,25 +87,15 @@ chown redis:redis /var/lib/redis/ -R
 # set up PostgreSQL
 systemctl enable postgresql
 if [ -e /postgres ]; then
-	echo "use existing PostgreSQL"
+	echo "Use existing PostgreSQL contents"
 	if [ -e /var/lib/postgres ]; then
 		rm -rf /var/lib/postgres
 		mv /postgres /var/lib/postgres
-		chown postgres:postgres /var/lib/postgres/ -R
 	fi
 else
-	echo "create new DB to PostgreSQL"
-	PGROOT=/var/lib/postgres
-	chown postgres:postgres ${PGROOT} -R
-	/usr/bin/postgresql-check-db-dir ${PGROOT}/data
-	/usr/bin/pg_ctl -s -D ${PGROOT}/data start -w -t 120 &
-	if [ -e ${MASTODON_DIRECTORY}/.env.production ]; then
-		MASTODON_DB_USER=`cat ${MASTODON_DIRECTORY}/.env.production | grep DB_USER | cut -d '=' -f 2`
-		MASTODON_DB_NAME=`cat ${MASTODON_DIRECTORY}/.env.production | grep DB_NAME | cut -d '=' -f 2`
-	else
-		MASTODON_DB_USER=${MASTODON_USER}
-		MASTODON_DB_NAME=${MASTODON_USER}
-	fi
-	sudo -u postgres createuser ${MASTODON_DB_USER}
-	sudo -u postgres createdb ${MASTODON_DB_NAME}
+	echo "----------------------------------------------------------------------------------------------------------------"
+	echo "After running this container, you must set up your DB inside it."
+	echo "See https://github.com/tootsuite/documentation/blob/master/Running-Mastodon/Production-guide.md for more details"
+	echo "----------------------------------------------------------------------------------------------------------------"
 fi
+chown postgres:postgres /var/lib/postgres/ -R
