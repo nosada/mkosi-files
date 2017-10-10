@@ -26,6 +26,4 @@ NORMAL_USER="builder"
 useradd -m ${NORMAL_USER}
 gpasswd -a ${NORMAL_USER} wheel
 echo "${NORMAL_USER}:${NORMAL_USER}" | chpasswd
-sed -i -e \
-	's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/g' \
-	/etc/sudoers
+sed -e 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/' /etc/sudoers -i
