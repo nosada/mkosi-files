@@ -37,7 +37,8 @@ $ cd <container_directory>
 
 
 # Containers on this repository
+- `buildspawn/`: for building archlinux packages
 - `corespawn/`: basic container
-- `buildspawn/`: basic container for building archlinux packages
+- `mstdnspawn/`: (maybe) available as core of Mastodon instance
 - `torspawn/`: running tor and privoxy inside container
 - `sngskspawn/`: content of https://sngsk.info
