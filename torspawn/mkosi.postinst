@@ -17,6 +17,11 @@ mv -f /nsswitch.conf /etc/nsswitch.conf
 mv -f /torrc /etc/tor/torrc
 mv -f /privoxy.config /etc/privoxy/config
 
+# add user 'tor' via systemd-sysusers
+# (currently not added by tor package)
+mkdir -p /etc/sysusers.d/
+mv -f /tor.sysusers.conf /etc/sysusers.d/tor.conf
+
 # prepare locale
 locale-gen
 
