@@ -71,8 +71,8 @@ if [ ! -d ${MASTODON_SCRIPTS_DIRECTORY} ]; then
 	mkdir ${MASTODON_SCRIPTS_DIRECTORY}
 	chown "${MASTODON_USER}:${MASTODON_USER}" ${MASTODON_SCRIPTS_DIRECTORY} -R
 fi
-mv -f /post_installation.sh ${MASTODON_SCRIPTS_DIRECTORY}/post_installation.sh
-mv -f /daily_task.sh ${MASTODON_SCRIPTS_DIRECTORY}/daily_task.sh
+mv -f /refresh-libraries ${MASTODON_SCRIPTS_DIRECTORY}/refresh-libraries
+mv -f /daily-task ${MASTODON_SCRIPTS_DIRECTORY}/daily-task
 mv -f /mastodon-daily-task.service /etc/systemd/system/mastodon-daily-task.service
 mv -f /mastodon-daily-task.timer /etc/systemd/system/mastodon-daily-task.timer
 systemctl enable mastodon-daily-task.service

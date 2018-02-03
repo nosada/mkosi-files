@@ -5,7 +5,7 @@ RefuseManualStop=yes
 
 [Service]
 Type=oneshot
-ExecStart=/opt/bin/daily_task.sh
+ExecStart=/opt/bin/daily-task
 
 [Install]
 WantedBy=multi-user.target
