@@ -1,0 +1,13 @@
+[Exec]
+Environment=DISPLAY=:0
+Environment=XAUTHORITY=~/.Xauthority
+PrivateUsers=true
+NotifyReady=true
+
+[Files]
+BindReadOnly=/tmp/.X11-unix/
+BindReadOnly=/etc/resolv.conf
+
+[Network]
+Private=no
+VirtualEthernet=no
