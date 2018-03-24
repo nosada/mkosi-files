@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# remove unneeded packages
+UNNEEDED_BASE_PKGS="linux nano"
+yes | pacman -Rscnu ${UNNEEDED_BASE_PKGS}
+yes | pacman -Scc
+pacman-optimize
+
+# install required config
+mv -f /locale.gen /etc/locale.gen
+mv -f /locale.conf /etc/locale.conf
+mv -f /pacman.conf /etc/pacman.conf
+mv -f /securetty /etc/securetty
+mv -f /nsswitch.conf /etc/nsswitch.conf
+mkdir -p /etc/pacman.d/hooks
+mv -f /mirrorupgrade.hook /etc/pacman.d/hooks/mirrorupgrade.hook
+
+# prepare locale
+locale-gen
+
+# set up normal user and its home directory
+NORMAL_USER="gui"
+NORMAL_USER_HOMEDIR="/home/$NORMAL_USER"
+QUTEBROWSER_DIR="$NORMAL_USER_HOMEDIR/.config/qutebrowser"
+useradd -m $NORMAL_USER
+mkdir -p $QUTEBROWSER_DIR
+mv -f /qutebrowser.config.py $QUTEBROWSER_DIR/config.py
+chown -R $NORMAL_USER:$NORMAL_USER $NORMAL_USER_HOMEDIR
