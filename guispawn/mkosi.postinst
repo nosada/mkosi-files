@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # remove unneeded packages
-UNNEEDED_BASE_PKGS="nano"
+UNNEEDED_BASE_PKGS="linux nano"
 yes | pacman -Rscnu ${UNNEEDED_BASE_PKGS}
 yes | pacman -Scc
 pacman-optimize
@@ -17,3 +17,12 @@ mv -f /mirrorupgrade.hook /etc/pacman.d/hooks/mirrorupgrade.hook
 
 # prepare locale
 locale-gen
+
+# set up normal user and its home directory
+NORMAL_USER="gui"
+NORMAL_USER_HOMEDIR="/home/$NORMAL_USER"
+QUTEBROWSER_DIR="$NORMAL_USER_HOMEDIR/.config/qutebrowser"
+useradd -m $NORMAL_USER
+mkdir -p $QUTEBROWSER_DIR
+mv -f /qutebrowser.config.py $QUTEBROWSER_DIR/config.py
+chown -R $NORMAL_USER:$NORMAL_USER $NORMAL_USER_HOMEDIR
