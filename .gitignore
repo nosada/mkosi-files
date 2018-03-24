@@ -1,4 +1,4 @@
 *.tar.xz
-.mkosi-*/
+.mkosi-*
 mkosi.default
 mkosi.cache/
