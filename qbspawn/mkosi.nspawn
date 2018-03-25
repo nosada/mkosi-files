@@ -7,7 +7,8 @@ NotifyReady=true
 
 [Files]
 BindReadOnly=/tmp/.X11-unix/
-BindReadOnly=/etc/resolv.conf
+# Uncomment below line if you don't boot qbspawn
+# BindReadOnly=/etc/resolv.conf
 Bind=/run/user/1000/pulse:/run/user/host/pulse
 Bind=/dev/snd
 Bind=/dev/shm
