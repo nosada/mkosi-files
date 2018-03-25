@@ -5,11 +5,12 @@ MKOSI = mkosi.default.tmpl \
 		mkosi.nspawn
 NSPAWN = ${CONTAINER} \
 	${CONTAINER}.nspawn
+MIRROR=$(shell reflector --latest 10 --age 12 --sort rate | grep Server | grep https | cut -d ' ' -f 3 | head -1 | cut -d '/' -f -3)
 
 all: image
 
 image: ${MKOSI}
-	sed -e 's/CONTAINER_NAME/${CONTAINER}/g' mkosi.default.tmpl > mkosi.default
+	sed -e 's/CONTAINER_NAME/${CONTAINER}/g' -e 's|MIRROR|${MIRROR}|g' mkosi.default.tmpl > mkosi.default
 	mkosi build
 
 clean: ${NSPAWN}
