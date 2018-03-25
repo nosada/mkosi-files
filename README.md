@@ -1,9 +1,13 @@
 # What's this?
 Configs and files for generating simple archlinux container by [mkosi](https://github.com/systemd/mkosi).
 
+This expects to use in Arch Linux.
+
 
 # How to use
-After cloning this repository, you could do belows:
+Install `base-devel`, `git`, `mkosi` and `reflector` and clone this repository.
+
+After cloning it, you could do belows:
 
 ## Creating container image
 ```
