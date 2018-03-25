@@ -1,7 +1,7 @@
 c.content.images = True
 c.content.javascript.enabled = True
 c.content.plugins = True
-c.content.private_browsing = False
+c.content.private_browsing = True
 c.content.proxy = "system"
 c.content.ssl_strict = True
 c.content.xss_auditing = True
