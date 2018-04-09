@@ -2,6 +2,8 @@
 
 # remove unneeded packages
 UNNEEDED_BASE_PKGS="nano \
+	linux \
+	netctl \
 	pciutils \
 	usbutils"
 yes | pacman -Rscnu ${UNNEEDED_BASE_PKGS}
@@ -51,7 +53,8 @@ chown "${MASTODON_USER}:${MASTODON_USER}" ${MASTODON_DIRECTORY} -R
 
 # check out stable version of mastodon and install requirements for mastodon
 cd ${MASTODON_DIRECTORY}
-MASTODON_VERSION=`git tag -l | grep -v 'rc[0-9]*$' | sort -V | tail -n 1`
+#MASTODON_VERSION=`git tag -l | grep -v 'rc[0-9]*$' | sort -V | tail -n 1`
+MASTODON_VERSION="master"
 git checkout ${MASTODON_VERSION}
 sudo -u ${MASTODON_USER} bundle install --deployment --without 'development' 'test'
 sudo -u ${MASTODON_USER} gem install puma
