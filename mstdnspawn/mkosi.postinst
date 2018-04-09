@@ -3,7 +3,6 @@
 # remove unneeded packages
 UNNEEDED_BASE_PKGS="nano \
 	linux \
-	netctl \
 	pciutils \
 	usbutils"
 yes | pacman -Rscnu ${UNNEEDED_BASE_PKGS}
