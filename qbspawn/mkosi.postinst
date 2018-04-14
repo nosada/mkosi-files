@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # remove unneeded packages
-UNNEEDED_BASE_PKGS="linux nano"
+UNNEEDED_BASE_PKGS="linux nano systemd-sysvcompat"
 yes | pacman -Rscnu ${UNNEEDED_BASE_PKGS}
 yes | pacman -Scc
 pacman-optimize
