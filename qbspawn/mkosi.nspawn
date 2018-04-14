@@ -7,16 +7,11 @@ NotifyReady=true
 
 [Files]
 BindReadOnly=/tmp/.X11-unix/
-# Uncomment below line if you don't boot qbspawn
-# BindReadOnly=/etc/resolv.conf
 Bind=/run/user/1000/pulse:/run/user/host/pulse
 Bind=/dev/snd
 Bind=/dev/shm
+Bind=/dev/input
 
 [Network]
-# Couldn't connect outside container because veth not created
-# when container not booted (systemd-nspawn -M CONTAINER -u USER COMMAND).
-# This container generally not booted, so private-networking configs
-# are commented out in default
-# Private=yes
-# VirtualEthernet=yes
+Private=yes
+VirtualEthernet=yes
