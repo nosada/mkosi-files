@@ -44,6 +44,6 @@ $ cd <container_directory>
 - `buildspawn/`: for building archlinux packages
 - `corespawn/`: basic container
 - `mstdnspawn/`: (maybe) available as core of Mastodon instance
-- `qbspawn/`: run [qutebrowser](https://www.qutebrowser.org/) with flashplugin inside nspawn container
+- `browsespawn/`: run web browser (qutebrowser or chromium) with flashplugin inside nspawn container
 - `torspawn/`: running tor and privoxy inside container
 - `sngskspawn/`: content of https://sngsk.info
