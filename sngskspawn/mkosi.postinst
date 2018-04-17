@@ -4,10 +4,9 @@
 UNNEEDED_BASE_PKGS="nano \
 	linux \
 	pciutils \
-	systemd-sysvcompat \
 	usbutils"
-yes | pacman -Rscnu ${UNNEEDED_BASE_PKGS}
-yes | pacman -Scc
+pacman -Rscnu ${UNNEEDED_BASE_PKGS} --noconfirm
+pacman -Scc --noconfirm
 pacman-optimize
 
 # install required config
