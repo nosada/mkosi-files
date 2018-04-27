@@ -1,0 +1,21 @@
+#!/bin/bash
+
+MASTODON_DIRECTORY="/opt/mastodon"
+MASTODON_USER="mastodon"
+MASTODON_BRANCH="master"
+
+systemctl stop mastodon-web.service
+systemctl stop mastodon-sidekiq.service
+systemctl stop mastodon-streaming.service
+
+su -l ${MASTODON_USER} -c "cd ${MASTODON_DIRECTORY}; \
+				git checkout ${MASTODON_BRANCH}; \
+				git pull -p; \
+				bundle install --path vendor/bundle; \
+				RAILS_ENV=production bundle exec rails db:migrate; \
+				yarn install --pure-lockfile; \
+				RAILS_ENV=production bundle exec rails assets:precompile"
+
+systemctl start mastodon-web.service
+systemctl start mastodon-sidekiq.service
+systemctl start mastodon-streaming.service

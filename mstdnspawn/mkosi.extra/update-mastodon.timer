@@ -1,0 +1,13 @@
+[Unit]
+Description=Update Mastodon code and required libraries
+RefuseManualStart=no
+RefuseManualStop=no
+
+[Timer]
+Persistent=false
+OnBootSec=300
+OnCalendar= *-*-* 03:00:00
+Unit=update-mastodon.service
+
+[Install]
+WantedBy=timers.target

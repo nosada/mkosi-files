@@ -1,0 +1,9 @@
+[Unit]
+Description=Update Mastodon code and required libraries
+
+[Service]
+Type=oneshot
+ExecStart=/opt/bin/update-mastodon
+
+[Install]
+WantedBy=default.target
