@@ -1,11 +1,12 @@
 # What's this?
-Configs and files for generating simple archlinux container by [mkosi](https://github.com/systemd/mkosi).
+Configs and files for generating archlinux container image by [mkosi](https://github.com/systemd/mkosi).
 
-This expects to use in Arch Linux.
+Expected to use this on Arch Linux.
 
 
 # How to use
-Install `base-devel`, `git`, `mkosi` and `reflector` and clone this repository.
+1. Install `base-devel`, `git`, `reflector` and `mkosi` (from AUR)
+2. Clone this repository
 
 After cloning it, you could do belows:
 
@@ -16,8 +17,8 @@ $ cd <container_directory>
 ```
 
 ## Importing built image
-- importing image via machinectl
-- putting nspawn config to /etc/systemd/nspawn/
+- Importing image via machinectl
+- Putting nspawn config to /etc/systemd/nspawn/
 
 ```
 $ cd <container_directory>
@@ -25,8 +26,8 @@ $ cd <container_directory>
 ```
 
 ## Removing container image
-- removing image via machinectl
-  - imply deletion of nspawn config
+- Removing image via machinectl
+  - Nspawn config also deleted
 
 ```
 $ cd <container_directory>
@@ -44,6 +45,6 @@ $ cd <container_directory>
 - `buildspawn/`: for building archlinux packages
 - `corespawn/`: basic container
 - `mstdnspawn/`: (maybe) available as core of Mastodon instance
-- `browsespawn/`: run web browser (qutebrowser or chromium) with flashplugin inside nspawn container
+- `guispawn/`: run web browser (qutebrowser or chromium) with flashplugin inside nspawn container
 - `torspawn/`: running tor and privoxy inside container
 - `sngskspawn/`: content of https://sngsk.info
