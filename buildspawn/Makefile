@@ -18,7 +18,7 @@ clean: ${NSPAWN}
 	rm mkosi.default
 
 install: ${NSPAWN}
-	machinectl import-raw ${CONTAINER}
+	/usr/lib/systemd/systemd-import raw ${CONTAINER}
 	install -Dm644 -o root -g root \
 		${CONTAINER}.nspawn /etc/systemd/nspawn/${CONTAINER}.nspawn
 
