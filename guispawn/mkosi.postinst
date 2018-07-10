@@ -2,9 +2,8 @@
 
 # remove unneeded packages
 UNNEEDED_BASE_PKGS="linux nano systemd-sysvcompat"
-yes | pacman -Rscnu ${UNNEEDED_BASE_PKGS}
-yes | pacman -Scc
-pacman-optimize
+pacman --noconfirm -Rscnu ${UNNEEDED_BASE_PKGS}
+pacman --noconfirm -Scc
 
 # install required config
 mv -f /locale.gen /etc/locale.gen

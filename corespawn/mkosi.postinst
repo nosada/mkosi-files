@@ -6,9 +6,8 @@ UNNEEDED_BASE_PKGS="nano \
 	pciutils \
 	systemd-sysvcompat
 	usbutils"
-yes | pacman -Rscnu ${UNNEEDED_BASE_PKGS}
-yes | pacman -Scc
-pacman-optimize
+pacman --noconfirm -Rscnu ${UNNEEDED_BASE_PKGS}
+pacman --noconfirm -Scc
 
 # install required config
 mv -f /locale.gen /etc/locale.gen
