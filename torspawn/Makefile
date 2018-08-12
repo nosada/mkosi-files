@@ -5,7 +5,7 @@ MKOSI = mkosi.default.tmpl \
 		mkosi.nspawn
 NSPAWN = ${CONTAINER} \
 	${CONTAINER}.nspawn
-MIRROR=$(shell reflector --age 12 --sort score --country $(shell where-am-i) | grep Server | cut -d ' ' -f 3 | head -1 | cut -d '/' -f -3)
+MIRROR=$(shell reflector --age 12 --sort age --country $(shell where-am-i) | grep Server | cut -d ' ' -f 3 | head -1 | cut -d '/' -f -3)
 
 all: image
 
