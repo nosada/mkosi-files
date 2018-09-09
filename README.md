@@ -10,41 +10,56 @@ Expected to use this on Arch Linux.
 
 After cloning it, you could do belows:
 
-## Creating container image
+## Simple way
+Invoke `update-nspawn-images` as root:
+
 ```
-$ cd <container_directory>
+# update-nspawn-images CONTAINER OTHER_CONTAINER ...
+```
+
+where `CONTAINER` or `OTHER_CONTAINER` are nspawn container name in this repository.
+
+Note that `update-nspawn-images` will only install container image.
+
+
+## Complicated way
+
+### Create container image
+```
+$ cd CONTAINER/
 # make
 ```
 
-## Importing built image
-- Importing image via machinectl
-- Putting nspawn config to /etc/systemd/nspawn/
+### Import built image
+- Import container image via `machinectl`
+- Install nspawn config to `/etc/systemd/nspawn/` as `CONTAINER.nspawn`
 
 ```
-$ cd <container_directory>
+$ cd CONTAINER/
 # make install
 ```
 
-## Removing container image
-- Removing image via machinectl
-  - Nspawn config also deleted
+### Remove container image
+- Remove container image via `machinectl`
+- Delete nspawn config installed as `/etc/systemd/nspawn/CONTAINER.nspawn`
 
 ```
-$ cd <container_directory>
+$ cd CONTAINER/
 # make uninstall
 ```
 
-## Cleaning built files
+### Clean built files
+Delete container image and `mkosi.default` in `CONTAINER/`
 ```
-$ cd <container_directory>
+$ cd CONTAINER/
 # make clean
 ```
 
 
 # Containers on this repository
-- `buildspawn/`: for building archlinux packages
-- `corespawn/`: basic container
-- `mstdnspawn/`: (maybe) available as core of Mastodon instance
-- `guispawn/`: run web browser (qutebrowser or chromium) with flashplugin inside nspawn container
+- `buildspawn/`: environment to build Arch packages
+- `corespawn/`: basic Arch container
+- `mstdnspawn/`: configuable Mastodon instance
+- `guispawn/`: running web browser (qutebrowser or chromium) with flashplugin inside nspawn container
 - `torspawn/`: running tor and privoxy inside container
-- `sngskspawn/`: content of https://sngsk.info
+- `sngskspawn/`: application container used in https://sngsk.info
