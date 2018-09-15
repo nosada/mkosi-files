@@ -25,5 +25,6 @@ locale-gen
 mv -f /sngsk.info /opt/sngsk.info
 cp /opt/sngsk.info/sngsk.info.service /etc/systemd/system/sngsk.info.service
 cp /opt/sngsk.info/nginx/container/nginx.conf /etc/nginx/nginx.conf
+sed -i -e '/^pid/d' /etc/nginx/nginx.conf
 systemctl enable nginx
 systemctl enable sngsk.info
