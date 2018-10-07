@@ -8,6 +8,7 @@ User=mastodon
 WorkingDirectory=/opt/mastodon
 Environment="RAILS_ENV=production"
 Environment="DB_POOL=5"
+Environment="LD_PRELOAD=JEMALLOC_PATH"
 ExecStart=/usr/bin/bundle exec sidekiq -c 5 -q default -q mailers -q pull -q push
 TimeoutSec=15
 Restart=always

@@ -8,6 +8,9 @@ User=mastodon
 WorkingDirectory=/opt/mastodon
 Environment="RAILS_ENV=production"
 Environment="PORT=3000"
+Environment="WEB_CONCURRENCY=1"
+Environment="MAX_THREADS=5"
+Environment="LD_PRELOAD=JEMALLOC_PATH"
 ExecStart=/usr/bin/bundle exec puma -C /opt/mastodon/config/puma.rb
 TimeoutSec=15
 Restart=always
