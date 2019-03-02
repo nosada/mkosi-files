@@ -17,15 +17,26 @@ mv -f /securetty /etc/securetty
 mv -f /nsswitch.conf /etc/nsswitch.conf
 mv -f /torrc /etc/tor/torrc
 mv -f /privoxy.config /etc/privoxy/config
+mv -f /resolved.conf /etc/systemd/resolved.conf
+mv -f /unbound.conf /etc/unbound/unbound.conf
+mv -f /dnscrypt-proxy.toml /etc/dnscrypt-proxy/dnscrypt-proxy.toml
+mv -f /tor.service.d /etc/systemd/system/tor.service.d
+mv -f /unbound.service.d /etc/systemd/system/unbound.service.d
 
 # add user 'tor' via systemd-sysusers
 # (currently not added by tor package)
 mkdir -p /etc/sysusers.d/
 mv -f /tor.sysusers.conf /etc/sysusers.d/tor.conf
 
+# change /etc/resolve.conf to /run/systemd/resolve/resolv.conf
+rm /etc/resolv.conf
+ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
+
 # prepare locale
 locale-gen
 
 # enable required services
+systemctl enable dnscrypt-proxy.service
+systemctl enable unbound.service
 systemctl enable tor.service
 systemctl enable privoxy.service
