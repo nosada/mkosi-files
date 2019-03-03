@@ -7,11 +7,11 @@ function help() {
 
 function stop_container_if_running() {
 	CONTAINER=$1
-	machinectl status $CONTAINER 1> /dev/null 2> /dev/null
+	machinectl status "$CONTAINER" 1> /dev/null 2> /dev/null
 	CONTAINER_RUNNING=$?
 	if [ $CONTAINER_RUNNING -eq 0 ]; then
 		while true; do
-			machinectl stop $CONTAINER
+			machinectl stop "$CONTAINER"
 			CONTAINER_STOPPED=$?
 			if [ $CONTAINER_STOPPED -eq 0 ]; then
 				break
@@ -22,31 +22,31 @@ function stop_container_if_running() {
 
 function remove_container_if_exists() {
 	CONTAINER=$1
-	machinectl image-status $CONTAINER 1> /dev/null 2> /dev/null
+	machinectl image-status "$CONTAINER" 1> /dev/null 2> /dev/null
 	CONTAINER_EXISTS=$?
 	if [ $CONTAINER_EXISTS -eq 0 ]; then
-		machinectl remove $CONTAINER
+		machinectl remove "$CONTAINER"
 	fi
 }
 
 function install_container() {
 	CONTAINER=$1
 	make
-	stop_container_if_running $CONTAINER
-	remove_container_if_exists $CONTAINER
+	stop_container_if_running "$CONTAINER"
+	remove_container_if_exists "$CONTAINER"
 	make install
 	make clean
 }
 
-if [[ "$@" = "" ]]; then
+if [ $# -eq 0 ]; then
 	help
 else
-	NSPAWN_FILES_DIR=`cd $(dirname $0); pwd`
-	CONTAINERS=$@
+	NSPAWN_FILES_DIR=$(cd "$(dirname "$0")" || exit 1; pwd)
+	CONTAINERS=( "$@" )
 fi
 
-for CONTAINER in $CONTAINERS; do
+for CONTAINER in "${CONTAINERS[@]}"; do
 	echo "Build and install $CONTAINER"
-	cd $NSPAWN_FILES_DIR/$CONTAINER
-	install_container $CONTAINER
+	cd "$NSPAWN_FILES_DIR/$CONTAINER" || exit 1
+	install_container "$CONTAINER"
 done
