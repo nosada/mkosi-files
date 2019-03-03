@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # remove unneeded packages
-UNNEEDED_BASE_PKGS="nano \
+UNNEEDED_BASE_PKGS=(nano \
 	linux \
 	pciutils \
-	usbutils"
-pacman --noconfirm -Rscnu ${UNNEEDED_BASE_PKGS}
+	usbutils)
+pacman --noconfirm -Rscnu "${UNNEEDED_BASE_PKGS[@]}"
 pacman --noconfirm -Scc
 
 # install required config

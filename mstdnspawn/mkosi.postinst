@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # remove unneeded packages
-UNNEEDED_BASE_PKGS="nano \
+UNNEEDED_BASE_PKGS=$(nano \
 	linux \
 	pciutils \
 	systemd-sysvcompat \
-	usbutils"
-pacman --noconfirm -Rscnu ${UNNEEDED_BASE_PKGS}
+	usbutils)
+pacman --noconfirm -Rscnu "${UNNEEDED_BASE_PKGS[@]}"
 pacman --noconfirm -Scc
 
 # install required config
@@ -51,7 +51,7 @@ echo "${MASTODON_USER}:${MASTODON_USER}" | chpasswd
 chown "${MASTODON_USER}:${MASTODON_USER}" ${MASTODON_DIRECTORY} -R
 
 # check out stable version of mastodon and install requirements for mastodon
-cd ${MASTODON_DIRECTORY}
+cd "${MASTODON_DIRECTORY}" || exit 1
 #MASTODON_VERSION=`git tag -l | grep -v 'rc[0-9]*$' | sort -V | tail -n 1`
 MASTODON_VERSION="master"
 git checkout ${MASTODON_VERSION}
@@ -62,12 +62,12 @@ sudo -u ${MASTODON_USER} RAILS_ENV=production bundle exec rails assets:precompil
 
 # install mastodon-related systemd services
 MASTODON_SERVICES=("web" "sidekiq" "streaming")
-for SERVICE in ${MASTODON_SERVICES[@]};
+for SERVICE in "${MASTODON_SERVICES[@]}";
 do
-	mv /mastodon-${SERVICE}.service /etc/systemd/system/mastodon-${SERVICE}.service
-	JEMALLOC_LOCATION=$(pacman -Ql jemalloc | egrep '.so$' | awk '{print $2}')
-	sed -e 's/JEMALLOC_PATH/'$JEMALLOC_LOCATION'/g' -i /etc/systemd/system/mastodon-${SERVICE}.service
-	systemctl enable mastodon-${SERVICE}
+	mv "/mastodon-${SERVICE}.service" "/etc/systemd/system/mastodon-${SERVICE}.service"
+	JEMALLOC_LOCATION=$(pacman -Ql jemalloc | grep -E '.so$' | awk '{print $2}')
+	sed -e 's/JEMALLOC_PATH/'"$JEMALLOC_LOCATION"'/g' -i "/etc/systemd/system/mastodon-${SERVICE}.service"
+	systemctl enable "mastodon-${SERVICE}"
 done
 
 # install operational scripts / services to /opt/bin
