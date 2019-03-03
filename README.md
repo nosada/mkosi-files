@@ -1,7 +1,7 @@
 # What's this?
 Configs and files for generating archlinux container image by [mkosi](https://github.com/systemd/mkosi).
 
-Expected to use this on Arch Linux.
+Expected to be used on Arch Linux.
 
 
 # How to use
