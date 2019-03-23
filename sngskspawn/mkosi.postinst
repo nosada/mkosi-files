@@ -1,9 +1,8 @@
 #!/bin/bash
 
 # remove unneeded packages
-UNNEEDED_BASE_PKGS=(nano \
-	linux \
-	pciutils \
+UNNEEDED_BASE_PKGS=(pciutils \
+	systemd-sysvcompat \
 	usbutils)
 pacman --noconfirm -Rscnu "${UNNEEDED_BASE_PKGS[@]}"
 pacman --noconfirm -Scc
