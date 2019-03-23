@@ -5,7 +5,7 @@ MKOSI = mkosi.default.tmpl \
 		mkosi.nspawn
 NSPAWN = ${CONTAINER} \
 	${CONTAINER}.nspawn
-MIRROR=$(shell reflector --age 12 --sort age --country $(shell where-am-i) | grep Server | head -1 | sed -e 's/^Server = \([a-z:/.]*\)\/.*$/\1/')
+MIRROR=$(shell reflector --age 12 --sort age --country $(shell where-am-i) | grep Server | head -1 | sed -e 's/^Server = \([a-z:/.]*\)\/.*$$/\1/')
 
 all: image
 
