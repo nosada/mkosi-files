@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # remove unneeded packages
-UNNEEDED_BASE_PKGS=(pciutils \
-	systemd-sysvcompat \
+# note: chromium requires pciutils
+UNNEEDED_BASE_PKGS=(systemd-sysvcompat \
 	usbutils)
 pacman --noconfirm -Rscnu "${UNNEEDED_BASE_PKGS[@]}"
 pacman --noconfirm -Scc
