@@ -63,3 +63,14 @@ $ cd CONTAINER/
 - `guispawn/`: running web browser (qutebrowser or chromium) with flashplugin inside nspawn container
 - `torspawn/`: running tor and privoxy inside container
 - `sngskspawn/`: application container used in https://sngsk.info
+
+## Notes
+Some environment variables are required to run X apps (i.e. qutebrowser or chromium) inside `guispawn`. Use below snippet:
+
+```
+$ machinectl shell \
+	--setenv=display=:0 \
+	--setenv=xauthority="\${HOME}/.xauthority" \
+	--setenv=pulse_server=unix:/run/user/host/pulse/native \
+	gui@guispawn /usr/bin/COMMAND ARGUMENTS
+```

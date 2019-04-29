@@ -27,13 +27,3 @@ useradd -m $NORMAL_USER
 mkdir -p $QUTEBROWSER_DIR
 mv -f /qutebrowser.config.py $QUTEBROWSER_DIR/config.py
 chown -R $NORMAL_USER:$NORMAL_USER $NORMAL_USER_HOMEDIR
-
-echo "===== Note: run command inside guispawn as below: ====="
-
-cat <<- EOF | sed -s 's/\t/ /g'
-machinectl shell \
-	--setenv=display=:0 \
-	--setenv=xauthority="\${HOME}/.xauthority" \
-	--setenv=pulse_server=unix:/run/user/host/pulse/native \
-	$NORMAL_USER@guispawn /usr/bin/COMMAND ARGUMENTS
-EOF
