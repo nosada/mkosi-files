@@ -1,7 +1,4 @@
 [Exec]
-Environment=DISPLAY=:0
-Environment=XAUTHORITY=~/.Xauthority
-Environment=PULSE_SERVER=unix:/run/user/host/pulse/native
 PrivateUsers=true
 NotifyReady=true
 
