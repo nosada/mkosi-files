@@ -61,7 +61,7 @@ $ cd CONTAINER/
 - `corespawn/`: basic Arch container
 - `mstdnspawn/`: configuable Mastodon instance
 - `guispawn/`: running web browser (qutebrowser or chromium) with flashplugin inside nspawn container
-- `texlivespawn/`: container which includes Tex Live packages
+- `tlspawn/`: container which includes Tex Live packages (`tl` is abbreviation of `Tex Live`)
 - `torspawn/`: running tor and privoxy inside container
 - `sngskspawn/`: application container used in https://sngsk.info
 

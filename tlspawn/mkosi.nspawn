@@ -2,6 +2,10 @@
 PrivateUsers=true
 NotifyReady=true
 
+[Files]
+# Specify directory where your LaTeX project exists
+# Bind=/foo/bar
+
 [Network]
 Private=yes
 VirtualEthernet=yes
