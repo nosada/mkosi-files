@@ -1,12 +1,5 @@
 #!/bin/bash
 
-# remove unneeded packages
-# note: chromium requires pciutils
-UNNEEDED_BASE_PKGS=(systemd-sysvcompat \
-	usbutils)
-pacman --noconfirm -Rscnu "${UNNEEDED_BASE_PKGS[@]}"
-pacman --noconfirm -Scc
-
 # install required config
 mv -f /locale.gen /etc/locale.gen
 mv -f /locale.conf /etc/locale.conf
@@ -16,14 +9,15 @@ mv -f /nsswitch.conf /etc/nsswitch.conf
 mkdir -p /etc/pacman.d/hooks
 mv -f /mirrorupgrade.hook /etc/pacman.d/hooks/mirrorupgrade.hook
 
+# install tor-browser
+pacman -U --noconfirm /*.pkg.tar.xz
+rm /*.pkg.tar.xz
+
 # prepare locale
 locale-gen
 
 # set up normal user and its home directory
 NORMAL_USER="gui"
 NORMAL_USER_HOMEDIR="/home/$NORMAL_USER"
-QUTEBROWSER_DIR="$NORMAL_USER_HOMEDIR/.config/qutebrowser"
 useradd -m $NORMAL_USER
-mkdir -p $QUTEBROWSER_DIR
-mv -f /qutebrowser.config.py $QUTEBROWSER_DIR/config.py
 chown -R $NORMAL_USER:$NORMAL_USER $NORMAL_USER_HOMEDIR
