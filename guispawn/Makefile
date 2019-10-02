@@ -13,7 +13,7 @@ all: image
 prepare:
 	[ -d tor-browser ] || git clone https://aur.archlinux.org/tor-browser.git
 	[ -e tor-browser/*.pkg.tar.xz ] || (cd tor-browser; extra-x86_64-build)
-	cp tor-browser/*.pkg.tar.xz mkosi.extra/
+	[ -e mkosi.extra/*.pkg.tar.xz ] || cp tor-browser/*.pkg.tar.xz mkosi.extra/
 
 image: ${MKOSI} prepare
 	sed -e 's/CONTAINER_NAME/${CONTAINER}/g' -e 's|MIRROR|${MIRROR}|g' mkosi.default.tmpl > mkosi.default
