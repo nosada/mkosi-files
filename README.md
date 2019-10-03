@@ -76,3 +76,11 @@ $ machinectl shell \
 	--setenv=pulse_server=unix:/run/user/host/pulse/native \
 	gui@guispawn /usr/bin/COMMAND ARGUMENTS
 ```
+
+Or you can use script `launch-app-in-container` like below:
+
+```
+$ launch-app-in-container COMMAND ARGUMENTS
+```
+
+This will do same thing of above snippet.

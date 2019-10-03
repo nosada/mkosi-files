@@ -1,0 +1,36 @@
+#!/bin/bash
+
+if [ $# -ge 1 ]; then
+	GIVEN=("$@")
+	CMD="${GIVEN[0]}"
+	ARGS=("${GIVEN[@]:1}")
+else
+	echo "Usage: $0 <application>" > /dev/stderr
+	exit 1
+fi
+
+CONTAINER_NAME="guispawn"
+CONTAINER_USER="gui"
+
+machinectl status $CONTAINER_NAME 1> /dev/null 2> /dev/null
+CONTAINER_RUNNING=$?
+if [ $CONTAINER_RUNNING -ne 0 ]; then
+	echo "Container $CONTAINER_NAME not running. Starting..."
+	while true; do
+		machinectl start $CONTAINER_NAME
+		CONTAINER_STARTED=$?
+		if [ $CONTAINER_STARTED -eq 0 ]; then
+			break
+		fi
+	done
+fi
+
+echo "Allow connecting X application in container to host X server"
+xhost +local:
+
+echo "Invoke" "$CMD" "${ARGS[@]}" "inside container $CONTAINER_NAME"
+machinectl shell \
+	--setenv=DISPLAY=:0 \
+	--setenv=XAUTHORITY="${HOME}/.Xauthority" \
+	--setenv=PULSE_SERVER=unix:/run/user/host/pulse/native \
+	$CONTAINER_USER@$CONTAINER_NAME "/usr/bin/$CMD" "${ARGS[@]}"
