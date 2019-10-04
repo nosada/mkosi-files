@@ -1,0 +1,26 @@
+#!/bin/bash
+
+[[ -n "$BUILDDIR" ]] || BUILDDIR="/root/build"
+[[ -n "$DESTDIR" ]] || DESTDIR="/root/dest"
+
+GNUPGHOME=$(mktemp -d /tmp/gnupg-XXXXXX)
+mkdir "$GNUPGHOME/.gnupg"
+chown nobody:nobody -R "$GNUPGHOME"
+
+sudo -u nobody -- bash -c "gpg --homedir $GNUPGHOME --auto-key-locate nodefault,wkd --locate-keys torbrowser@torproject.org"
+
+# shellcheck disable=SC1090
+source $BUILDDIR/PKGBUILD
+# shellcheck disable=SC2154
+[[ -n "$depends" ]] && pacman -Sy --noconfirm "${depends[@]}"
+# shellcheck disable=SC2154
+[[ -n "$makedepends" ]] && pacman -Sy --noconfirm "${makedepends[@]}"
+
+MAKEPKGDIR="/tmp/makepkg"
+mkdir -p "$MAKEPKGDIR"
+cp -r $BUILDDIR/* $MAKEPKGDIR/.
+chown -R nobody:nobody -R $MAKEPKGDIR
+
+sudo -u nobody -- bash -c "cd $MAKEPKGDIR; \
+	BUILDDIR=$MAKEPKGDIR PKGDEST=$MAKEPKGDIR SRCDEST=$MAKEPKGDIR GNUPGHOME=$GNUPGHOME PKGEXT='.pkg.tar' makepkg -sr"
+cp $MAKEPKGDIR/*.pkg.tar $DESTDIR/built_package

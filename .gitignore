@@ -2,3 +2,6 @@
 .mkosi-*
 mkosi.default
 mkosi.cache/
+mkosi.builddir/
+*.cache-pre-dev
+*.cache-pre-inst

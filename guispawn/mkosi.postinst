@@ -10,10 +10,6 @@ mkdir -p /etc/pacman.d/hooks
 mv -f /mirrorupgrade.hook /etc/pacman.d/hooks/mirrorupgrade.hook
 mv -f /mirrorlist /etc/pacman.d/mirrorlist
 
-# install tor-browser
-pacman -U --noconfirm /*.pkg.tar.xz
-rm /*.pkg.tar.xz
-
 # prepare locale
 locale-gen
 
@@ -22,3 +18,9 @@ NORMAL_USER="gui"
 NORMAL_USER_HOMEDIR="/home/$NORMAL_USER"
 useradd -m $NORMAL_USER
 chown -R $NORMAL_USER:$NORMAL_USER $NORMAL_USER_HOMEDIR
+
+# install AUR package if exists
+if [ -e /built_package ]; then
+	pacman -U --noconfirm /built_package
+	rm -f /built_package
+fi

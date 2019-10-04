@@ -16,15 +16,22 @@ Packages=
 	pacman-contrib
 	pepper-flash
 	polkit
-	qutebrowser
 	reflector
 	xorg-font-util
 	xorg-font-utils
 	xorg-xinit
 	xorg-server
 	xorg-server-common
+	!linux
+	!linux-headers
+	!linux-firmware
 	!systemd-sysvcompat
 	!usbutils
+BuildPackages=
+	sudo
+	binutils
+BuildSources=mkosi.builddir
+WithNetwork=true
 
 [Partitions]
 	RootSize=4294967296
