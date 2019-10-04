@@ -14,6 +14,7 @@ prepare:
 	[ -d tor-browser ] || git clone https://aur.archlinux.org/tor-browser.git
 	[ -e tor-browser/*.pkg.tar.xz ] || (cd tor-browser; extra-x86_64-build)
 	[ -e mkosi.extra/*.pkg.tar.xz ] || cp tor-browser/*.pkg.tar.xz mkosi.extra/
+	reflector --age 12 --sort age --country $(shell where-am-i) --protocol https --protocol http > mkosi.extra/mirrorlist
 
 image: ${MKOSI} prepare
 	sed -e 's/CONTAINER_NAME/${CONTAINER}/g' -e 's|MIRROR|${MIRROR}|g' mkosi.default.tmpl > mkosi.default
@@ -24,6 +25,7 @@ clean: ${NSPAWN}
 	rm mkosi.default
 	rm -rf tor-browser
 	rm -f mkosi.extra/*.pkg.tar.xz
+	rm -f mkosi.extra/mirrorlist
 
 install: ${NSPAWN}
 	machinectl import-raw ${CONTAINER}
