@@ -22,8 +22,8 @@ clean: ${NSPAWN}
 	mkosi clean
 	rm mkosi.default
 	rm mkosi.extra/mirrorlist
-	rm ${CONTAINER}.cache-*
 	rm -rf aurpkg
+	[ -e ${CONTAINER}.cache-* ] && rm ${CONTAINER}.cache-*
 
 install: ${NSPAWN}
 	machinectl import-raw ${CONTAINER}

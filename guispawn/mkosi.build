@@ -5,11 +5,11 @@
 [[ -n "$DESTDIR" ]] || DESTDIR="/root/dest"
 
 for DIR in $BUILDDIR $SRCDIR $DESTDIR; do
-	setfacl -m u::rwx,g::rwx $DIR
-	setfacl -d --set u::rwx,g::rwx,o::- $DIR
+	setfacl -m u:nobody:rwx $DIR
+	setfacl -d --set u:nobody:rwx,o::- $DIR
 done
-setfacl -R -m u:nobody:rwx,g::rwx /root
-setfacl -R -d --set u:nobody:rwx,g::rwx,o::- /root
+setfacl -R -m u:nobody:rwx /root
+setfacl -R -d --set u:nobody:rwx,o::- /root
 
 GNUPGHOME=$(mktemp -d /tmp/gnupg-XXXXXX)
 mkdir "$GNUPGHOME/.gnupg"
