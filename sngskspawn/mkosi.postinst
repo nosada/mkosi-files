@@ -1,19 +1,21 @@
 #!/bin/bash
 
-# install required config
+# Install required config
 mv -f /locale.gen /etc/locale.gen
 mv -f /locale.conf /etc/locale.conf
 mv -f /pacman.conf /etc/pacman.conf
-mv -f /securetty /etc/securetty
 mv -f /nsswitch.conf /etc/nsswitch.conf
 mv -f /journald.conf /etc/systemd/journald.conf
 mkdir -p /etc/pacman.d/hooks
 mv -f /mirrorupgrade.hook /etc/pacman.d/hooks/mirrorupgrade.hook
 
-# prepare locale
+# Remove /etc/securetty to enable root login
+rm -f /etc/securetty
+
+# Prepare locale
 locale-gen
 
-# deploy sngsk.info application
+# Deploy sngsk.info application
 mv -f /sngsk.info /opt/sngsk.info
 cp /opt/sngsk.info/sngsk.info.service /etc/systemd/system/sngsk.info.service
 cp /opt/sngsk.info/nginx/container/nginx.conf /etc/nginx/nginx.conf

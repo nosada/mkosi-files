@@ -1,24 +1,26 @@
 #!/bin/bash
 
-# install required config
+# Install required config
 mv -f /locale.gen /etc/locale.gen
 mv -f /locale.conf /etc/locale.conf
 mv -f /pacman.conf /etc/pacman.conf
-mv -f /securetty /etc/securetty
 mv -f /nsswitch.conf /etc/nsswitch.conf
 mv -f /journald.conf /etc/systemd/journald.conf
 mkdir -p /etc/pacman.d/hooks
 mv -f /mirrorupgrade.hook /etc/pacman.d/hooks/mirrorupgrade.hook
 
-# prepare locale
+# Remove /etc/securetty to enable root login
+rm -f /etc/securetty
+
+# Prepare locale
 locale-gen
 
-# --- set up mastodon (copy set up script for installing dependencies etc.) ---
+# --- Set up mastodon (copy set up script for installing dependencies etc.) ---
 # cf.
 # - https://github.com/tootsuite/documentation/blob/master/Running-Mastodon/Production-guide.md
 # - https://wiki.archlinux.org/index.php/Mastodon
 
-# define parameters
+# Define parameters
 MASTODON_DIRECTORY="/opt/mastodon"
 MASTODON_SCRIPTS_DIRECTORY="/opt/bin"
 MASTODON_USER="mastodon"
@@ -34,14 +36,14 @@ if [ -e /mastodon.env.production ]; then
 	mv -f /mastodon.env.production ${MASTODON_DIRECTORY}/.env.production
 fi
 
-# add 'mastodon' user and chown ${MASTODON_DIRECTORY}
+# Add 'mastodon' user and chown ${MASTODON_DIRECTORY}
 useradd ${MASTODON_USER} -d ${MASTODON_DIRECTORY}
 gpasswd -a ${MASTODON_USER} wheel
 sed -e 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/' /etc/sudoers -i
 echo "${MASTODON_USER}:${MASTODON_USER}" | chpasswd
 chown "${MASTODON_USER}:${MASTODON_USER}" ${MASTODON_DIRECTORY} -R
 
-# check out stable version of mastodon and install requirements for mastodon
+# Check out stable version of mastodon and install requirements for mastodon
 cd "${MASTODON_DIRECTORY}" || exit 1
 #MASTODON_VERSION=`git tag -l | grep -v 'rc[0-9]*$' | sort -V | tail -n 1`
 MASTODON_VERSION="master"
@@ -51,7 +53,7 @@ sudo -u ${MASTODON_USER} gem install puma
 sudo -u ${MASTODON_USER} yarn install --pure-lockfile
 sudo -u ${MASTODON_USER} RAILS_ENV=production bundle exec rails assets:precompile
 
-# install mastodon-related systemd services
+# Install mastodon-related systemd services
 MASTODON_SERVICES=("web" "sidekiq" "streaming")
 for SERVICE in "${MASTODON_SERVICES[@]}";
 do
@@ -61,7 +63,7 @@ do
 	systemctl enable "mastodon-${SERVICE}"
 done
 
-# install operational scripts / services to /opt/bin
+# Install operational scripts / services to /opt/bin
 if [ ! -d ${MASTODON_SCRIPTS_DIRECTORY} ]; then
 	mkdir ${MASTODON_SCRIPTS_DIRECTORY}
 	chown "${MASTODON_USER}:${MASTODON_USER}" ${MASTODON_SCRIPTS_DIRECTORY} -R
@@ -76,14 +78,14 @@ mv -f /update-mastodon.timer /etc/systemd/system/update-mastodon.timer
 systemctl enable mastodon-daily-task.timer
 systemctl enable update-mastodon.timer
 
-# set up Redis
+# Set up Redis
 systemctl enable redis
 if [ ! -e /var/lib/redis ]; then
 	mkdir /var/lib/redis
 fi
 chown redis:redis /var/lib/redis/ -R
 
-# set up PostgreSQL
+# Set up PostgreSQL
 systemctl enable postgresql
 if [ -e /postgres ]; then
 	echo "Use existing PostgreSQL contents"

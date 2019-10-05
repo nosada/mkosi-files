@@ -1,13 +1,15 @@
 #!/bin/bash
 
-# install required config
+# Install required config
 mv -f /locale.gen /etc/locale.gen
 mv -f /locale.conf /etc/locale.conf
 mv -f /pacman.conf /etc/pacman.conf
-mv -f /securetty /etc/securetty
 mv -f /nsswitch.conf /etc/nsswitch.conf
 mkdir -p /etc/pacman.d/hooks
 mv -f /mirrorupgrade.hook /etc/pacman.d/hooks/mirrorupgrade.hook
 
-# prepare locale
+# Remove /etc/securetty to enable root login
+rm -f /etc/securetty
+
+# Prepare locale
 locale-gen

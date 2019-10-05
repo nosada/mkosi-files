@@ -1,25 +1,27 @@
 #!/bin/bash
 
-# install required config
+# Install required config
 mv -f /locale.gen /etc/locale.gen
 mv -f /locale.conf /etc/locale.conf
 mv -f /pacman.conf /etc/pacman.conf
-mv -f /securetty /etc/securetty
 mv -f /nsswitch.conf /etc/nsswitch.conf
 mkdir -p /etc/pacman.d/hooks
 mv -f /mirrorupgrade.hook /etc/pacman.d/hooks/mirrorupgrade.hook
 mv -f /mirrorlist /etc/pacman.d/mirrorlist
 
-# prepare locale
+# Remove /etc/securetty to enable root login
+rm -f /etc/securetty
+
+# Prepare locale
 locale-gen
 
-# set up normal user and its home directory
+# Set up normal user and its home directory
 NORMAL_USER="gui"
 NORMAL_USER_HOMEDIR="/home/$NORMAL_USER"
 useradd -m $NORMAL_USER
 chown -R $NORMAL_USER:$NORMAL_USER $NORMAL_USER_HOMEDIR
 
-# install AUR package if exists
+# Install AUR package if exists
 if [ -e /built_package ]; then
 	pacman -U --noconfirm /built_package
 	rm -f /built_package

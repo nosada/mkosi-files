@@ -1,10 +1,9 @@
 #!/bin/bash
 
-# install required config
+# Install required config
 mv -f /locale.gen /etc/locale.gen
 mv -f /locale.conf /etc/locale.conf
 mv -f /pacman.conf /etc/pacman.conf
-mv -f /securetty /etc/securetty
 mv -f /nsswitch.conf /etc/nsswitch.conf
 mv -f /torrc /etc/tor/torrc
 mv -f /privoxy.config /etc/privoxy/config
@@ -14,19 +13,22 @@ mv -f /dnscrypt-proxy.toml /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 mv -f /tor.service.d /etc/systemd/system/tor.service.d
 mv -f /unbound.service.d /etc/systemd/system/unbound.service.d
 
-# add user 'tor' via systemd-sysusers
+# Remove /etc/securetty to enable root login
+rm -f /etc/securetty
+
+# Add user 'tor' via systemd-sysusers
 # (currently not added by tor package)
 mkdir -p /etc/sysusers.d/
 mv -f /tor.sysusers.conf /etc/sysusers.d/tor.conf
 
-# change /etc/resolve.conf to /run/systemd/resolve/resolv.conf
+# Change /etc/resolve.conf to /run/systemd/resolve/resolv.conf
 rm /etc/resolv.conf
 ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
 
-# prepare locale
+# Prepare locale
 locale-gen
 
-# enable required services
+# Enable required services
 systemctl enable dnscrypt-proxy.service
 systemctl enable unbound.service
 systemctl enable tor.service

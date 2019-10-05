@@ -1,21 +1,23 @@
 #!/bin/bash
 
-# install required config
+# Install required config
 mv -f /locale.gen /etc/locale.gen
 mv -f /locale.conf /etc/locale.conf
 mv -f /pacman.conf /etc/pacman.conf
 mv -f /makepkg.conf /etc/makepkg.conf
-mv -f /securetty /etc/securetty
 mv -f /nsswitch.conf /etc/nsswitch.conf
 [[ ! -d /etc/pacman.d/hooks ]] && mkdir -p /etc/pacman.d/hooks
 mv -f /mirrorupgrade.hook /etc/pacman.d/hooks/mirrorupgrade.hook
 [[ ! -d /etc/tmpfiles.d ]] && mkdir -p /etc/tmpfiles.d
 mv -f /scratch.conf /etc/tmpfiles.d/scratch.conf
 
-# prepare locale
+# Remove /etc/securetty to enable root login
+rm -f /etc/securetty
+
+# Prepare locale
 locale-gen
 
-# prepare for using normal user 'builder'
+# Prepare for using normal user 'builder'
 NORMAL_USER="builder"
 useradd -m ${NORMAL_USER}
 gpasswd -a ${NORMAL_USER} wheel
