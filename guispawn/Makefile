@@ -11,7 +11,6 @@ all: image
 
 prepare:
 	[ -d aurpkg ] || git clone https://aur.archlinux.org/tor-browser.git aurpkg
-	[ -d mkosi.builddir ] || mkdir -p mkosi.builddir
 	echo "Server = ${MIRROR}/\$$repo/os/\$$arch" > mkosi.extra/mirrorlist
 	sed -e 's;CONTAINER_NAME;${CONTAINER};g' -e 's;MIRROR;${MIRROR};g' mkosi.default.tmpl > mkosi.default
 
