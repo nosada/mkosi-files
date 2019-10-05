@@ -6,10 +6,9 @@ Expected to be used on Arch Linux.
 
 # How to use
 1. Install `base-devel`, `git`, `reflector` and `mkosi` (from AUR)
-2. If you want to use `guispawn` (explained in below), install `devtools` too
-3. Install https://github.com/nosada/scripts/blob/master/where-am-i to somewhere in `$PATH`
-  - `mmdblookup` and `geoip2-database` may also be required
-4. Clone this repository
+2. Install https://github.com/nosada/scripts/blob/master/where-am-i to somewhere in `$PATH`
+    - `mmdblookup` and `geoip2-database` may also be required
+3. Clone this repository
 
 After cloning it, you could do belows:
 
