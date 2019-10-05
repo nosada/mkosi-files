@@ -10,7 +10,7 @@ MIRROR=$(shell reflector --age 12 --sort age --country $(shell where-am-i) --pro
 all: image
 
 image: ${MKOSI}
-	sed -e 's/CONTAINER_NAME/${CONTAINER}/g' -e 's|MIRROR|${MIRROR}|g' mkosi.default.tmpl > mkosi.default
+	sed -e 's;CONTAINER_NAME;${CONTAINER};g' -e 's;MIRROR;${MIRROR};g' mkosi.default.tmpl > mkosi.default
 	mkosi build
 
 clean: ${NSPAWN}
