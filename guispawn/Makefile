@@ -10,18 +10,20 @@ MIRROR=$(shell reflector --age 12 --sort age --country $(shell where-am-i) --pro
 all: image
 
 prepare:
-	[ -e mkosi.builddir/PKGBUILD ] || git clone https://aur.archlinux.org/tor-browser.git mkosi.builddir
+	[ -d aurpkg ] || git clone https://aur.archlinux.org/tor-browser.git aurpkg
+	[ -d mkosi.builddir ] || mkdir -p mkosi.builddir
 	echo "Server = ${MIRROR}/\$$repo/os/\$$arch" > mkosi.extra/mirrorlist
+	sed -e 's;CONTAINER_NAME;${CONTAINER};g' -e 's;MIRROR;${MIRROR};g' mkosi.default.tmpl > mkosi.default
 
 image: ${MKOSI} prepare
-	sed -e 's/CONTAINER_NAME/${CONTAINER}/g' -e 's|MIRROR|${MIRROR}|g' mkosi.default.tmpl > mkosi.default
-	mkosi -i build
+	mkosi build
 
 clean: ${NSPAWN}
 	mkosi clean
 	rm mkosi.default
 	rm mkosi.extra/mirrorlist
-	rm -rf mkosi.builddir
+	rm ${CONTAINER}.cache-*
+	rm -rf aurpkg
 
 install: ${NSPAWN}
 	machinectl import-raw ${CONTAINER}

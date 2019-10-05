@@ -22,7 +22,9 @@ useradd -m $NORMAL_USER
 chown -R $NORMAL_USER:$NORMAL_USER $NORMAL_USER_HOMEDIR
 
 # Install AUR package if exists
-if [ -e /built_package ]; then
-	pacman -U --noconfirm /built_package
-	rm -f /built_package
-fi
+for CANDIDATE in /*.pkg.tar; do
+	if [ -e "$CANDIDATE" ]; then
+		pacman -U --noconfirm "$CANDIDATE"
+		rm -f "$CANDIDATE"
+	fi
+done
