@@ -1,7 +1,7 @@
 #!/bin/bash
 
 [[ -n "$BUILDDIR" ]] || BUILDDIR="/root/build"
-[[ -n "$SRCDIR" ]] || SRCDIR="/root/build"
+[[ -n "$SRCDIR" ]] || SRCDIR="/root/src"
 [[ -n "$DESTDIR" ]] || DESTDIR="/root/dest"
 
 for DIR in $BUILDDIR $SRCDIR $DESTDIR; do
