@@ -2,22 +2,28 @@
 
 if [ $# -ge 1 ]; then
 	GIVEN=("$@")
-	CMD="${GIVEN[0]}"
-	ARGS=("${GIVEN[@]:1}")
+	CONTAINER_USER=$(echo "${GIVEN[0]}" | cut -d '@' -f 1)
+	CONTAINER_NAME=$(echo "${GIVEN[0]}" | cut -d '@' -f 2)
+	CMD="${GIVEN[1]}"
+	ARGS=("${GIVEN[@]:2}")
 else
-	echo "Usage: $0 <application>" > /dev/stderr
+	echo "Usage: $0 CONTAINER_USER@CONTAINER_NAME APP" > /dev/stderr
 	exit 1
 fi
 
-CONTAINER_NAME="guispawn"
-CONTAINER_USER="gui"
+machinectl show-image "$CONTAINER_NAME" 1> /dev/null 2> /dev/null
+CONTAINER_IMAGE_EXISTS=$?
+if [ $CONTAINER_IMAGE_EXISTS -ne 0 ]; then
+	echo "Container image '$CONTAINER_NAME' not exists, Have you installed it correctly?" > /dev/stderr
+	exit 1
+fi
 
-machinectl status $CONTAINER_NAME 1> /dev/null 2> /dev/null
+machinectl status "$CONTAINER_NAME" 1> /dev/null 2> /dev/null
 CONTAINER_RUNNING=$?
 if [ $CONTAINER_RUNNING -ne 0 ]; then
 	echo "Container $CONTAINER_NAME not running. Starting..."
 	while true; do
-		machinectl start $CONTAINER_NAME
+		machinectl start "$CONTAINER_NAME"
 		CONTAINER_STARTED=$?
 		if [ $CONTAINER_STARTED -eq 0 ]; then
 			break
@@ -33,4 +39,4 @@ machinectl shell \
 	--setenv=DISPLAY=:0 \
 	--setenv=XAUTHORITY="${HOME}/.Xauthority" \
 	--setenv=PULSE_SERVER=unix:/run/user/host/pulse/native \
-	$CONTAINER_USER@$CONTAINER_NAME "/usr/bin/$CMD" "${ARGS[@]}"
+	"$CONTAINER_USER@$CONTAINER_NAME" "/usr/bin/$CMD" "${ARGS[@]}"
