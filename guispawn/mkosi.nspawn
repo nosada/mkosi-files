@@ -8,6 +8,7 @@ Bind=/run/user/1000/pulse:/run/user/host/pulse
 Bind=/dev/snd
 Bind=/dev/shm
 Bind=/dev/input
+Bind=/dev/dri
 
 [Network]
 Private=yes
