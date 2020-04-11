@@ -69,13 +69,9 @@ if [ ! -d ${MASTODON_SCRIPTS_DIRECTORY} ]; then
 	chown "${MASTODON_USER}:${MASTODON_USER}" ${MASTODON_SCRIPTS_DIRECTORY} -R
 fi
 mv -f /refresh-libraries ${MASTODON_SCRIPTS_DIRECTORY}/refresh-libraries
-mv -f /daily-task ${MASTODON_SCRIPTS_DIRECTORY}/daily-task
 mv -f /update-mastodon ${MASTODON_SCRIPTS_DIRECTORY}/update-mastodon
-mv -f /mastodon-daily-task.service /etc/systemd/system/mastodon-daily-task.service
-mv -f /mastodon-daily-task.timer /etc/systemd/system/mastodon-daily-task.timer
 mv -f /update-mastodon.service /etc/systemd/system/update-mastodon.service
 mv -f /update-mastodon.timer /etc/systemd/system/update-mastodon.timer
-systemctl enable mastodon-daily-task.timer
 systemctl enable update-mastodon.timer
 
 # Set up Redis
