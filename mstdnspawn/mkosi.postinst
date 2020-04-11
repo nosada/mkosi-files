@@ -59,7 +59,7 @@ for SERVICE in "${MASTODON_SERVICES[@]}";
 do
 	mv "/mastodon-${SERVICE}.service" "/etc/systemd/system/mastodon-${SERVICE}.service"
 	JEMALLOC_LOCATION=$(pacman -Ql jemalloc | grep -E '.so$' | awk '{print $2}')
-	sed -e 's/JEMALLOC_PATH/'"$JEMALLOC_LOCATION"'/g' -i "/etc/systemd/system/mastodon-${SERVICE}.service"
+	sed -e 's;JEMALLOC_PATH;'"$JEMALLOC_LOCATION"';g' -i "/etc/systemd/system/mastodon-${SERVICE}.service"
 	systemctl enable "mastodon-${SERVICE}"
 done
 
