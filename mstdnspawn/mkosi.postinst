@@ -96,3 +96,8 @@ else
 	echo "----------------------------------------------------------------------------------------------------------------"
 fi
 chown postgres:postgres /var/lib/postgres/ -R
+
+# Set up PgBouncer
+mkdir -p /var/log/pgbouncer
+chown -R pgboucer:pgbouncer /var/log/pgbouncer
+systemctl enable pgbouncer
