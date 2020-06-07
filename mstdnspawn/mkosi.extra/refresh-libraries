@@ -6,8 +6,9 @@ sudo systemctl stop mastodon-web.service
 sudo systemctl stop mastodon-sidekiq.service
 sudo systemctl stop mastodon-streaming.service
 
-cd ${MASTODON_DIRECTORY}
+cd "${MASTODON_DIRECTORY}" || exit 2
 bundle install --path vendor/bundle
+bundle pristine
 RAILS_ENV=production bundle exec rails db:migrate
 yarn install --pure-lockfile
 RAILS_ENV=production bundle exec rails assets:precompile
