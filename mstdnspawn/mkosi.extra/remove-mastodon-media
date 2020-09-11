@@ -1,0 +1,15 @@
+#!/bin/bash
+
+THRESHOLD=90
+MASTODON_DIR="/opt/mastodon"
+
+ROOT_VOLUME=$(mount | grep 'on / ' | awk '{print $1}')
+ROOT_FILESYSTEM_USAGE_RATE=$(df | grep "$ROOT_VOLUME" | awk '{print $5}')
+
+if [ "${ROOT_FILESYSTEM_USAGE_RATE%\%}" -ge "$THRESHOLD" ]; then
+	echo "Remove Mastodon media"
+	cd "${MASTODON_DIR}" || exit 1
+	RAILS_ENV=production bin/tootctl media remove
+else
+	echo "$ROOT_VOLUME (mounted as '/') still has sufficient space"
+fi

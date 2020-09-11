@@ -73,6 +73,10 @@ mv -f /update-mastodon ${MASTODON_SCRIPTS_DIRECTORY}/update-mastodon
 mv -f /update-mastodon.service /etc/systemd/system/update-mastodon.service
 mv -f /update-mastodon.timer /etc/systemd/system/update-mastodon.timer
 systemctl enable update-mastodon.timer
+mv -f /remove-mastodon-media ${MASTODON_SCRIPTS_DIRECTORY}/remove-mastodon-media
+mv -f /remove-mastodon-media.service /etc/systemd/system/remove-mastodon-media.service
+mv -f /remove-mastodon-media.timer /etc/systemd/system/remove-mastodon-media.timer
+systemctl enable remove-mastodon-media.timer
 
 # Set up Redis
 systemctl enable redis

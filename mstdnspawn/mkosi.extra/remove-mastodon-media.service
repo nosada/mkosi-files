@@ -1,0 +1,9 @@
+[Unit]
+Description=Remove Mastodon media to reduce disk usage
+
+[Service]
+Type=oneshot
+ExecStart=/opt/bin/remove-mastodon-media
+
+[Install]
+WantedBy=default.target

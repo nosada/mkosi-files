@@ -1,0 +1,13 @@
+[Unit]
+Description=Remove Mastodon media to reduce disk usage
+RefuseManualStart=no
+RefuseManualStop=no
+
+[Timer]
+Persistent=false
+OnBootSec=300
+OnCalendar= *-*-* 04:00:00
+Unit=remove-mastodon-media.service
+
+[Install]
+WantedBy=timers.target
