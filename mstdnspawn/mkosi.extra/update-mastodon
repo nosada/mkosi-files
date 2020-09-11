@@ -10,6 +10,7 @@ systemctl stop mastodon-streaming.service
 
 su -l ${MASTODON_USER} -c "cd ${MASTODON_DIRECTORY}; \
 				git checkout ${MASTODON_BRANCH}; \
+				git checkout $(git status | grep modified | awk '{print $2}'); \
 				git pull -p; \
 				bundle install --path vendor/bundle; \
 				bundle pristine; \
