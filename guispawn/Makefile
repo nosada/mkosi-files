@@ -10,7 +10,9 @@ MIRROR=$(shell reflector --age 12 --sort age --country $(shell where-am-i) --pro
 all: image
 
 prepare:
-	[ -d aurpkg ] || git clone https://aur.archlinux.org/tor-browser.git aurpkg
+	[ -d aurpkg ] || mkdir aurpkg
+	[ -d aurpkg/tor-browser ] || git clone https://aur.archlinux.org/tor-browser.git aurpkg/tor-browser
+	[ -d aurpkg/chromium-widevine ] || git clone https://aur.archlinux.org/chromium-widevine.git aurpkg/chromium-widevine
 	echo "Server = ${MIRROR}/\$$repo/os/\$$arch" > mkosi.extra/mirrorlist
 	sed -e 's;CONTAINER_NAME;${CONTAINER};g' -e 's;MIRROR;${MIRROR};g' mkosi.default.tmpl > mkosi.default
 

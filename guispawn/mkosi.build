@@ -5,8 +5,8 @@
 [[ -n "$DESTDIR" ]] || DESTDIR="/root/dest"
 
 for DIR in $BUILDDIR $SRCDIR $DESTDIR; do
-	setfacl -m u:nobody:rwx $DIR
-	setfacl -d --set u:nobody:rwx,o::- $DIR
+	setfacl -m u:nobody:rwx -R $DIR
+	setfacl -d --set u:nobody:rwx,o::- -R $DIR
 done
 setfacl -m u:nobody:rwx /root
 setfacl -d --set u:nobody:rwx,o::- /root
@@ -17,11 +17,15 @@ chown nobody:nobody -R "$GNUPGHOME"
 
 sudo -u nobody -- bash -c "gpg --homedir $GNUPGHOME --auto-key-locate nodefault,wkd --locate-keys torbrowser@torproject.org"
 
-# shellcheck disable=SC1090
-source $SRCDIR/PKGBUILD
-# shellcheck disable=SC2154
-[[ -n "$depends" ]] && pacman -Sy --noconfirm "${depends[@]}"
-# shellcheck disable=SC2154
-[[ -n "$makedepends" ]] && pacman -Sy --noconfirm "${makedepends[@]}"
+for DIR in "$SRCDIR"/*; do
+	cd "$DIR" || exit 1
 
-sudo -u nobody -- bash -c "PKGDEST=$DESTDIR GNUPGHOME=$GNUPGHOME PKGEXT='.pkg.tar' makepkg -sr"
+	# shellcheck disable=SC1091
+	source ./PKGBUILD
+	# shellcheck disable=SC2154
+	[[ -n "$depends" ]] && pacman -Sy --noconfirm "${depends[@]}"
+	# shellcheck disable=SC2154
+	[[ -n "$makedepends" ]] && pacman -Sy --noconfirm "${makedepends[@]}"
+
+	sudo -u nobody -- bash -c "PKGDEST=$DESTDIR GNUPGHOME=$GNUPGHOME PKGEXT='.pkg.tar' makepkg -sr"
+done
