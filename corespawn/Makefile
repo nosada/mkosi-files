@@ -9,13 +9,17 @@ MIRROR=$(shell reflector --age 12 --sort age --country $(shell where-am-i) --pro
 
 all: image
 
-image: ${MKOSI}
+prepare:
+	echo "Server = ${MIRROR}/\$$repo/os/\$$arch" > mkosi.extra/mirrorlist
+
+image: ${MKOSI} prepare
 	sed -e 's;CONTAINER_NAME;${CONTAINER};g' -e 's;MIRROR;${MIRROR};g' mkosi.default.tmpl > mkosi.default
 	mkosi build
 
 clean: ${NSPAWN}
 	mkosi clean
 	rm mkosi.default
+	rm mkosi.extra/mirrorlist
 
 install: ${NSPAWN}
 	machinectl import-raw ${CONTAINER}

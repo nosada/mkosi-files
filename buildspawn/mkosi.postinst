@@ -10,6 +10,7 @@ mv -f /nsswitch.conf /etc/nsswitch.conf
 mv -f /mirrorupgrade.hook /etc/pacman.d/hooks/mirrorupgrade.hook
 [[ ! -d /etc/tmpfiles.d ]] && mkdir -p /etc/tmpfiles.d
 mv -f /scratch.conf /etc/tmpfiles.d/scratch.conf
+mv -f /mirrorlist /etc/pacman.d/mirrorlist
 
 # Remove /etc/securetty to enable root login
 rm -f /etc/securetty

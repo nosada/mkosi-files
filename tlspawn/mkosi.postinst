@@ -7,6 +7,7 @@ mv -f /pacman.conf /etc/pacman.conf
 mv -f /nsswitch.conf /etc/nsswitch.conf
 mkdir -p /etc/pacman.d/hooks
 mv -f /mirrorupgrade.hook /etc/pacman.d/hooks/mirrorupgrade.hook
+mv -f /mirrorlist /etc/pacman.d/mirrorlist
 
 # Remove /etc/securetty to enable root login
 rm -f /etc/securetty
