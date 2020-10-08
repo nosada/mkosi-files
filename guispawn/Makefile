@@ -5,7 +5,7 @@ MKOSI = mkosi.default.tmpl \
 		mkosi.nspawn
 NSPAWN = ${CONTAINER} \
 	${CONTAINER}.nspawn
-MIRROR=$(shell reflector --age 12 --sort age --country $(shell where-am-i) --protocol https --protocol http | grep Server | head -1 | cut -d ' ' -f 3 | cut -d '$$' -f 1)
+MIRROR=$(shell grep Server /etc/pacman.d/mirrorlist | head -1 | cut -d ' ' -f 3 | cut -d '$$' -f 1)
 
 all: image
 
@@ -13,7 +13,7 @@ prepare:
 	[ -d aurpkg ] || mkdir aurpkg
 	[ -d aurpkg/tor-browser ] || git clone https://aur.archlinux.org/tor-browser.git aurpkg/tor-browser
 	[ -d aurpkg/chromium-widevine ] || git clone https://aur.archlinux.org/chromium-widevine.git aurpkg/chromium-widevine
-	echo "Server = ${MIRROR}/\$$repo/os/\$$arch" > mkosi.extra/mirrorlist
+	cp /etc/pacman.d/mirrorlist mkosi.extra/mirrorlist
 	sed -e 's;CONTAINER_NAME;${CONTAINER};g' -e 's;MIRROR;${MIRROR};g' mkosi.default.tmpl > mkosi.default
 
 image: ${MKOSI} prepare

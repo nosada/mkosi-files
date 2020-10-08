@@ -5,9 +5,10 @@ Expected to be used on Arch Linux.
 
 
 # How to use
-1. Install `base-devel`, `git`, `reflector` and `mkosi` (from AUR)
-2. Install https://github.com/nosada/scripts/blob/master/where-am-i to somewhere in `$PATH`
-3. Clone this repository
+1. Install `base-devel`, `git` from official repository
+2. Install `mkosi` (or `mkosi-git`) from AUR
+3. Install https://github.com/nosada/scripts/blob/master/where-am-i to somewhere in `$PATH`
+4. Clone this repository
 
 After cloning it, you could do belows:
 
