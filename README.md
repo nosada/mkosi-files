@@ -69,13 +69,7 @@ $ cd CONTAINER/
 
 ## Notes
 ### Communicating outside container with `VirtualEthernet=yes`
-`VirtualEthernet=yes` is default configuration on this repository.
-
-Try below if you cannot go outside nspawn container with veth:
-- iptables: `-A INPUT -i ve-<CONTAINER_NAME> -j ACCEPT`
-  - ex. `-A INPUT -i ve-buildspawn -j ACCEPT`
-- nftables: `iifname "ve-*" accept` in block `chain input {}`
-- others: Accept "input" from veth interface used by nspawn container
+See https://github.com/nosada/mkosi-files/issues/6#issuecomment-706651468.
 
 ### Using `guispawn`
 Some environment variables are required to run X apps (i.e. qutebrowser or chromium) inside `guispawn`. Use below snippet:
