@@ -1,5 +1,5 @@
 # What's this?
-Configs and files for generating archlinux container image by [mkosi](https://github.com/systemd/mkosi).
+Configs and files for generating Arch Linux [systemd-nspawn](https://www.freedesktop.org/software/systemd/man/systemd-nspawn.html) container image by [mkosi](https://github.com/systemd/mkosi).
 
 Expected to be used on Arch Linux.
 
