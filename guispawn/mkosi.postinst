@@ -28,3 +28,11 @@ for CANDIDATE in /*.pkg.tar; do
 		rm -f "$CANDIDATE"
 	fi
 done
+
+# Install chromium-widevine
+# Ref.: https://github.com/proprietary/chromium-widevine#alternative-install-widevine-alone-without-google-chrome
+TEMPDIR=$(mktemp -d /tmp/chromium-widevine-XXXXX)
+cd "${TEMPDIR}" || exit 1
+git clone https://github.com/proprietary/chromium-widevine.git && \
+	cd chromium-widevine && \
+	./use-standalone-widevine.sh
