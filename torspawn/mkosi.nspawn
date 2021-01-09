@@ -1,6 +1,7 @@
 [Exec]
 PrivateUsers=true
 NotifyReady=true
+ResolvConf=bind-stub
 
 [Files]
 TemporaryFileSystem=/var
