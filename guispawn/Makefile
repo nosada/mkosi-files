@@ -1,5 +1,5 @@
 CONTAINER = $(notdir $(shell pwd))
-MKOSI = mkosi.default.tmpl \
+MKOSI = mkosi.default \
 		mkosi.postinst \
 		mkosi.extra \
 		mkosi.nspawn
@@ -13,14 +13,12 @@ prepare:
 	[ -d aurpkg ] || mkdir aurpkg
 	[ -d aurpkg/tor-browser ] || git clone https://aur.archlinux.org/tor-browser.git aurpkg/tor-browser
 	cp /etc/pacman.d/mirrorlist mkosi.extra/mirrorlist
-	sed -e 's;CONTAINER_NAME;${CONTAINER};g' -e 's;MIRROR;${MIRROR};g' mkosi.default.tmpl > mkosi.default
 
 image: ${MKOSI} prepare
-	mkosi build
+	mkosi --mirror ${MIRROR} --output ${CONTAINER} build
 
 clean: ${NSPAWN}
-	mkosi clean
-	rm mkosi.default
+	mkosi --output ${CONTAINER} clean
 	rm mkosi.extra/mirrorlist
 	rm -rf aurpkg
 
