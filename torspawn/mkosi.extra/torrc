@@ -1,6 +1,4 @@
 SocksPort localhost:9050
 Log notice syslog
 DataDirectory /tmp/tor
-ExcludeNodes SlowServer,{jp},{gb},{us},{ca},{au},{nz}
-ExcludeExitNodes {bg},{cz},{fi},{hu},{ie},{lv},{lt},{lu},{nl},{ro},{es},{se},{ch},{ir},{ru},{hk},{il}
 StrictNodes 1
