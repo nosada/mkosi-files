@@ -12,6 +12,7 @@ all: image
 prepare:
 	[ -d aurpkg ] || mkdir aurpkg
 	[ -d aurpkg/tor-browser ] || git clone https://aur.archlinux.org/tor-browser.git aurpkg/tor-browser
+	patch aurpkg/tor-browser/PKGBUILD tor-browser.PKGBUILD.patch
 	cp /etc/pacman.d/mirrorlist mkosi.extra/mirrorlist
 
 image: ${MKOSI} prepare
