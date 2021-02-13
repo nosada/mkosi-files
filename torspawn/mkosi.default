@@ -1,0 +1,27 @@
+[Distribution]
+Distribution=arch
+
+[Output]
+Format=raw_btrfs
+
+[Packages]
+Packages=
+	dnscrypt-proxy
+	polkit
+	privoxy
+	reflector
+	sed
+	tor
+	unbound
+	!linux
+	!linux-headers
+	!iptables
+	!linux-api-headers
+	!linux-firmware
+	!systemd-sysvcompat
+	!usbutils
+	!util-linux
+	!pciutils
+
+[Partitions]
+	RootSize=2147483648

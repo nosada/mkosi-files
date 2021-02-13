@@ -1,0 +1,28 @@
+[Distribution]
+Distribution=arch
+
+[Output]
+Format=raw_btrfs
+
+[Packages]
+Packages=
+	aria2
+	base-devel
+	ccache
+	git
+	pacman-contrib
+	polkit
+	reflector
+	sudo
+	!linux
+	!linux-headers
+	!iptables
+	!linux-api-headers
+	!linux-firmware
+	!pciutils
+	!systemd-sysvcompat
+	!usbutils
+	!util-linux
+
+[Partitions]
+	RootSize=3221225472
