@@ -25,7 +25,7 @@ for DIR in "$SRCDIR"/*; do
 	# shellcheck disable=SC2154
 	[[ -n "$depends" ]] && pacman -Sy --noconfirm "${depends[@]}"
 	# shellcheck disable=SC2154
-	[[ -n "$makedepends" ]] && pacman -Sy --noconfirm "${makedepends[@]}"
+	[[ -n "$makedepends" ]] && pacman -Sy --noconfirm "${makedepends[@]}" base-devel
 
 	sudo -u nobody -- bash -c "PKGDEST=$DESTDIR GNUPGHOME=$GNUPGHOME PKGEXT='.pkg.tar' makepkg -sr"
 done
