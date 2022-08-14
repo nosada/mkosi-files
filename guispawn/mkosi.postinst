@@ -26,6 +26,8 @@ useradd -m $NORMAL_USER
 chown -R $NORMAL_USER:$NORMAL_USER $NORMAL_USER_HOMEDIR
 
 # Install AUR package if exists
+pacman-key --init
+pacman-key --populate archlinux
 for CANDIDATE in /*.pkg.tar; do
 	if [ -e "$CANDIDATE" ]; then
 		pacman -U --noconfirm "$CANDIDATE"

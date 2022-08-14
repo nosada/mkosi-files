@@ -17,6 +17,8 @@ chown nobody:nobody -R "$GNUPGHOME"
 
 sudo -u nobody -- bash -c "gpg --homedir $GNUPGHOME --auto-key-locate nodefault,wkd --locate-keys torbrowser@torproject.org"
 
+pacman-key --init
+pacman-key --populate archlinux
 for DIR in "$SRCDIR"/*; do
 	cd "$DIR" || exit 1
 
