@@ -16,7 +16,8 @@ su -l ${MASTODON_USER} -c "git checkout $(su -l ${MASTODON_USER} -c "git status 
 	bundle pristine; \
 	RAILS_ENV=production bundle exec rails db:migrate; \
 	yarn install --pure-lockfile; \
-	RAILS_ENV=production bundle exec rails assets:precompile"
+	RAILS_ENV=production bundle exec rails assets:precompile; \
+	npx browserslist@latest --update-db"
 
 systemctl start mastodon-web.service
 systemctl start mastodon-sidekiq.service
