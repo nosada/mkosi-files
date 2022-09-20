@@ -3,6 +3,7 @@
 # Install required config
 mv -f /locale.gen /etc/locale.gen
 mv -f /locale.conf /etc/locale.conf
+sed -ie 's/\(ParallelDownloads = \).*/\1'"$(nproc)"'/g' /pacman.conf
 mv -f /pacman.conf /etc/pacman.conf
 mv -f /nsswitch.conf /etc/nsswitch.conf
 mv -f /journald.conf /etc/systemd/journald.conf
