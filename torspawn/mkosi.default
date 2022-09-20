@@ -24,4 +24,4 @@ Packages=
 	!pciutils
 
 [Partitions]
-	RootSize=2147483648
+RootSize=2147483648

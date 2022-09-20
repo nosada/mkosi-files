@@ -25,4 +25,4 @@ Packages=
 	!util-linux
 
 [Partitions]
-	RootSize=3221225472
+RootSize=3221225472

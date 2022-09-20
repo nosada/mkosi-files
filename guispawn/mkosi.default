@@ -38,4 +38,4 @@ SourceFileTransfer=mount
 WithNetwork=true
 
 [Partitions]
-	RootSize=4294967296
+RootSize=4294967296
