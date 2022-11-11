@@ -1,25 +1,33 @@
 #!/bin/bash
 
-[[ -n "$BUILDDIR" ]] || BUILDDIR="/root/build"
+BUILDER=builder
+useradd -m "${BUILDER}"
+
 [[ -n "$SRCDIR" ]] || SRCDIR="/root/src"
 [[ -n "$DESTDIR" ]] || DESTDIR="/root/dest"
 
-for DIR in $BUILDDIR $SRCDIR $DESTDIR; do
-	setfacl -m u:nobody:rwx -R $DIR
-	setfacl -d --set u:nobody:rwx,o::- -R $DIR
+# SRCDIR and DESTDIR mount host volumes and it causes "Invalid arguments" error on setting ACL by setfacl
+# Preparing "unmounted" alternative and use it as source store
+LOCAL_SRCDIR="$(mktemp -d /tmp/src-XXXXXX)"
+LOCAL_DESTDIR="$(mktemp -d /tmp/dest-XXXXXX)"
+[[ -n "$BUILDDIR" ]] || BUILDDIR="$(mktemp -d /tmp/build-XXXXXX)"
+mkdir -p "${LOCAL_SRCDIR}"
+cp -rf "${SRCDIR}"/* "${LOCAL_SRCDIR}"/.
+
+for DIR in "${BUILDDIR}" "${LOCAL_SRCDIR}" "${LOCAL_DESTDIR}"; do
+	setfacl -m u:"${BUILDER}":rwx -R "${DIR}"
+	setfacl -d --set u:"${BUILDER}":rwx,o::- -R "${DIR}"
 done
-setfacl -m u:nobody:rwx /root
-setfacl -d --set u:nobody:rwx,o::- /root
 
 GNUPGHOME=$(mktemp -d /tmp/gnupg-XXXXXX)
 mkdir "$GNUPGHOME/.gnupg"
-chown nobody:nobody -R "$GNUPGHOME"
+chown "${BUILDER}":"${BUILDER}" -R "$GNUPGHOME"
 
-sudo -u nobody -- bash -c "gpg --homedir $GNUPGHOME --auto-key-locate nodefault,wkd --locate-keys torbrowser@torproject.org"
+sudo -u "${BUILDER}" -- bash -c "gpg --homedir $GNUPGHOME --auto-key-locate nodefault,wkd --locate-keys torbrowser@torproject.org"
 
 pacman-key --init
 pacman-key --populate archlinux
-for DIR in "$SRCDIR"/*; do
+for DIR in "$LOCAL_SRCDIR"/*; do
 	cd "$DIR" || exit 1
 
 	# shellcheck disable=SC1091
@@ -29,5 +37,6 @@ for DIR in "$SRCDIR"/*; do
 	# shellcheck disable=SC2154
 	[[ -n "$makedepends" ]] && pacman -Sy --noconfirm "${makedepends[@]}" base-devel
 
-	sudo -u nobody -- bash -c "PKGDEST=$DESTDIR GNUPGHOME=$GNUPGHOME PKGEXT='.pkg.tar' makepkg -sr"
+	sudo -u "${BUILDER}" -- bash -c "PKGDEST=$LOCAL_DESTDIR GNUPGHOME=$GNUPGHOME PKGEXT='.pkg.tar' makepkg -sr"
 done
+cp -rf "${LOCAL_DESTDIR}"/* "${DESTDIR}"/.
