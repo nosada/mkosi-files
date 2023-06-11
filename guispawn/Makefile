@@ -24,8 +24,9 @@ image: ${MKOSI} prepare aur
 
 clean: ${NSPAWN}
 	mkosi --output ${CONTAINER} clean
-	rm mkosi.extra/mirrorlist
+	rm -f mkosi.extra/mirrorlist
 	rm -rf aurpkg
+	rm -rf ./mkosi-*
 
 install: ${NSPAWN}
 	machinectl import-raw ${CONTAINER}
