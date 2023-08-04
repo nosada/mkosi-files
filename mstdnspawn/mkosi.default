@@ -24,7 +24,6 @@ Packages=
 	postgresql
 	postgresql-libs
 	protobuf
-	python2
 	python
 	redis
 	reflector
