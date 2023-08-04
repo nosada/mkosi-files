@@ -10,6 +10,7 @@ if [ "${ROOT_FILESYSTEM_USAGE_RATE%\%}" -ge "$THRESHOLD" ]; then
 	echo "Remove Mastodon media"
 	cd "${MASTODON_DIR}" || exit 1
 	RAILS_ENV=production bin/tootctl media remove
+	RAILS_ENV=production bin/tootctl media remove-orphans
 else
 	echo "$ROOT_VOLUME (mounted as '/') still has sufficient space"
 fi
