@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# shellcheck disable=SC2154
+if [ "$container" != "mkosi" ]; then
+    exec mkosi-chroot "$SCRIPT" "$@"
+fi
+
 BUILDER=builder
 useradd -m "${BUILDER}"
 

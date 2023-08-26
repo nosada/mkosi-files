@@ -1,5 +1,5 @@
 CONTAINER = $(notdir $(shell pwd))
-MKOSI = mkosi.default \
+MKOSI = mkosi.conf \
 		mkosi.postinst \
 		mkosi.extra \
 		mkosi.nspawn
