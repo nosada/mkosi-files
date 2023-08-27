@@ -2,7 +2,9 @@
 
 # shellcheck disable=SC2154
 if [ "$container" != "mkosi" ]; then
-    exec mkosi-chroot "$SCRIPT" "$@"
+    if [[ $(shell mkosi --version | awk '{print $$2}' | cut -d . -f 1) -ge 15 ]]; then
+        exec mkosi-chroot "$SCRIPT" "$@"
+    fi
 fi
 
 # Install required config

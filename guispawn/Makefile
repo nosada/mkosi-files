@@ -2,6 +2,7 @@ CONTAINER = $(notdir $(shell pwd))
 MKOSI = mkosi.conf \
 		mkosi.postinst \
 		mkosi.extra \
+		mkosi.repart \
 		mkosi.nspawn
 NSPAWN = ${CONTAINER} \
 	${CONTAINER}.nspawn
@@ -20,6 +21,7 @@ tor-browser: prepare
 aur: tor-browser
 
 image: ${MKOSI} prepare aur
+	[[ $(shell mkosi --version | awk '{print $$2}' | cut -d . -f 1) -lt 15 ]] && sed -e 's/\(Format=\).*/\1raw_btrfs/g' -i mkosi.conf
 	mkosi --mirror ${MIRROR} --output ${CONTAINER} build
 
 clean: ${NSPAWN}
@@ -27,6 +29,8 @@ clean: ${NSPAWN}
 	rm -f mkosi.extra/mirrorlist
 	rm -rf aurpkg
 	rm -rf ./mkosi-*
+	git clean -df
+	git reset --hard
 
 install: ${NSPAWN}
 	machinectl import-raw ${CONTAINER}
