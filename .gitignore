@@ -4,4 +4,4 @@ mkosi.cache/
 mkosi.builddir/
 *.cache-pre-dev
 *.cache-pre-inst
-mkosi.extra/mirrorlist
+*/mkosi.extra/mirrorlist
