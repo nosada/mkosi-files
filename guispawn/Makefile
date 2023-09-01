@@ -16,7 +16,6 @@ prepare:
 
 tor-browser: prepare
 	[ -d aurpkg/tor-browser ] || git clone https://aur.archlinux.org/tor-browser.git aurpkg/tor-browser
-	cd aurpkg/tor-browser && patch < ../../tor-browser.patch
 
 aur: tor-browser
 
