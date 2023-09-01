@@ -20,7 +20,7 @@ tor-browser: prepare
 aur: tor-browser
 
 image: ${MKOSI} prepare aur
-	[[ $(shell mkosi --version | awk '{print $$2}' | cut -d . -f 1) -lt 15 ]] && sed -e 's/\(Format=\).*/\1raw_btrfs/g' -i mkosi.conf
+	[[ $(shell mkosi --version | awk '{print $$2}' | cut -d . -f 1) -lt 15 ]] && sed -e 's/\(Format=\).*/\1raw_btrfs/g' -i mkosi.conf  || exit 0
 	mkosi --mirror ${MIRROR} --output ${CONTAINER} build
 
 clean: ${NSPAWN}
