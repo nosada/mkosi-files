@@ -1,4 +1,4 @@
 #!/bin/bash
 
-systemctl --root sngskspawn enable nginx.service
-systemctl --root sngskspawn enable sngsk.info.service
+systemctl --root "$BUILDROOT" enable nginx.service
+systemctl --root "$BUILDROOT" enable sngsk.info.service
