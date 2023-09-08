@@ -1,5 +1,7 @@
 *.tar.xz
 .mkosi-*
+*spawn
+*spawn.*
 mkosi.cache/
 mkosi.builddir/
 *.cache-pre-dev
