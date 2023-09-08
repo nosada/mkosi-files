@@ -69,7 +69,6 @@ sudo make clean
 
 # Containers on this repository
 
-- `buildspawn/`: Environment to build Arch packages
 - `corespawn/`: Basic Arch container
 - `mstdnspawn/`: Configuable Mastodon instance
 - `guispawn/`: Packaging X apps. Currently only web browsers (Tor browser & Chromium)
