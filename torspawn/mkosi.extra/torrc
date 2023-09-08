@@ -1,4 +1,0 @@
-SocksPort localhost:9050
-Log notice syslog
-DataDirectory /tmp/tor
-StrictNodes 1
