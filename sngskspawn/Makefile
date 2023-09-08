@@ -1,6 +1,5 @@
 CONTAINER = $(notdir $(shell pwd))
 MKOSI = mkosi.conf \
-		mkosi.postinst \
 		mkosi.extra \
 		mkosi.repart \
 		mkosi.nspawn
@@ -15,10 +14,16 @@ prepare:
 
 image: ${MKOSI} prepare
 	[[ $(shell mkosi --version | awk '{print $$2}' | cut -d . -f 1) -lt 15 ]] && sed -e 's/\(Format=\).*/\1raw_btrfs/g' -i mkosi.conf || exit 0
+	cp -f mkosi.extra/opt/sngsk.info/sngsk.info.service mkosi.extra/etc/systemd/system/sngsk.info.service
+	cp -f cp mkosi.extra/opt/sngsk.info/nginx/container/nginx.conf mkosi.extra/etc/nginx/nginx.conf
+	sed -i -e '/^pid/d' mkosi.extra/etc/nginx/nginx.conf
 	mkosi --mirror ${MIRROR} build
 
 clean: ${NSPAWN}
 	mkosi clean
+	rm -f mkosi.extra/etc/pacman.d/mirrorlist
+	rm -f mkosi.extra/etc/systemd/system/sngsk.info.service
+	rm -rf mkosi.extra/etc/nginx/nginx.conf
 	rm -f mkosi.extra/mirrorlist
 	rm -rf ./mkosi-*
 	git clean -df

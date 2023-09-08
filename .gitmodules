@@ -1,3 +1,6 @@
 [submodule "sngskspawn/mkosi.extra/sngsk.info"]
 	path = sngskspawn/mkosi.extra/sngsk.info
 	url = https://github.com/nosada/sngsk.info.git
+[submodule "sngskspawn/mkosi.extra/opt/sngsk.info"]
+	path = sngskspawn/mkosi.extra/opt/sngsk.info
+	url = https://github.com/nosada/sngsk.info.git
