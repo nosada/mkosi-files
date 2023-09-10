@@ -1,0 +1,72 @@
+#!/bin/bash
+
+# --- Set up mastodon (copy set up script for installing dependencies etc.) ---
+# cf.
+# - https://docs.joinmastodon.org/admin/ for more details."
+# - https://wiki.archlinux.org/index.php/Mastodon
+
+chroot "${BUILDROOT}" "${SCRIPT}" "$@"
+
+# Define parameters
+MASTODON_DIRECTORY="/opt/mastodon"
+MASTODON_SCRIPTS_DIRECTORY="/opt/bin"
+MASTODON_USER="mastodon"
+
+# git-clone mastodon repository
+if [ ! -e "$MASTODON_DIRECTORY" ]; then
+	MASTODON_REPOSITORY="https://github.com/tootsuite/mastodon.git"
+	git clone ${MASTODON_REPOSITORY} ${MASTODON_DIRECTORY}
+fi
+
+# Add 'mastodon' user and chown ${MASTODON_DIRECTORY}
+useradd ${MASTODON_USER} -d ${MASTODON_DIRECTORY}
+gpasswd -a ${MASTODON_USER} wheel
+sed -e 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/' /etc/sudoers -i
+echo "${MASTODON_USER}:${MASTODON_USER}" | chpasswd
+chown "${MASTODON_USER}:${MASTODON_USER}" ${MASTODON_DIRECTORY} -R
+
+# Check out stable version of mastodon and install requirements for mastodon
+cd "${MASTODON_DIRECTORY}" || exit 1
+MASTODON_VERSION="main"
+git checkout ${MASTODON_VERSION}
+sudo -u ${MASTODON_USER} bundle install --deployment --without 'development' 'test'
+sudo -u ${MASTODON_USER} gem install puma
+sudo -u ${MASTODON_USER} yarn install --pure-lockfile
+sudo -u ${MASTODON_USER} RAILS_ENV=production bundle exec rails assets:precompile
+
+# Install mastodon-related systemd services
+MASTODON_SERVICES=("web" "sidekiq" "streaming")
+for SERVICE in "${MASTODON_SERVICES[@]}";
+do
+	JEMALLOC_LOCATION=$(pacman -Ql jemalloc | grep -E '.so$' | awk '{print $2}')
+	sed -e 's;JEMALLOC_PATH;'"$JEMALLOC_LOCATION"';g' -i "/etc/systemd/system/mastodon-${SERVICE}.service"
+	systemctl enable "mastodon-${SERVICE}"
+done
+
+# Install operational scripts / services to /opt/bin
+if [ ! -d ${MASTODON_SCRIPTS_DIRECTORY} ]; then
+	mkdir ${MASTODON_SCRIPTS_DIRECTORY}
+	chown "${MASTODON_USER}:${MASTODON_USER}" ${MASTODON_SCRIPTS_DIRECTORY} -R
+fi
+systemctl enable update-mastodon.timer
+systemctl enable remove-mastodon-media.timer
+
+# Set up Redis
+systemctl enable redis
+if [ ! -e /var/lib/redis ]; then
+	mkdir /var/lib/redis
+fi
+chown redis:redis /var/lib/redis/ -R
+
+# Set up PostgreSQL
+systemctl enable postgresql
+echo "----------------------------------------------------------------------------------------------------------------"
+echo "You must set up your DB inside the containt on fresh install."
+echo "See https://docs.joinmastodon.org/admin/ for more details."
+echo "----------------------------------------------------------------------------------------------------------------"
+chown postgres:postgres /var/lib/postgres/ -R
+
+# Set up PgBouncer
+mkdir -p /var/log/pgbouncer
+chown -R pgboucer:pgbouncer /var/log/pgbouncer
+systemctl enable pgbouncer
