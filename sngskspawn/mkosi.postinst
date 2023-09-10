@@ -1,4 +1,0 @@
-#!/bin/bash
-
-systemctl --root "$BUILDROOT" enable nginx.service
-systemctl --root "$BUILDROOT" enable sngsk.info.service
