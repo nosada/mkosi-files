@@ -15,7 +15,7 @@ prepare:
 	cp /etc/pacman.d/mirrorlist mkosi.extra/mirrorlist
 
 tor-browser: prepare
-	[ -d aurpkg/tor-browser ] || git clone https://aur.archlinux.org/tor-browser.git aurpkg/tor-browser
+	[ -d aurpkg/tor-browser-bin ] || git clone https://aur.archlinux.org/tor-browser-bin.git aurpkg/tor-browser-bin
 
 aur: tor-browser
 
