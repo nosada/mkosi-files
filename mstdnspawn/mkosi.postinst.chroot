@@ -5,8 +5,6 @@
 # - https://docs.joinmastodon.org/admin/ for more details."
 # - https://wiki.archlinux.org/index.php/Mastodon
 
-chroot "${BUILDROOT}" "${SCRIPT}" "$@"
-
 # Define parameters
 MASTODON_DIRECTORY="/opt/mastodon"
 MASTODON_SCRIPTS_DIRECTORY="/opt/bin"
