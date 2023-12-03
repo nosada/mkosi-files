@@ -25,6 +25,7 @@ chown "${MASTODON_USER}:${MASTODON_USER}" ${MASTODON_DIRECTORY} -R
 
 # Check out stable version of mastodon and install requirements for mastodon
 cd "${MASTODON_DIRECTORY}" || exit 1
+corepack enable
 MASTODON_VERSION="main"
 git checkout ${MASTODON_VERSION}
 sudo -u ${MASTODON_USER} bundle install --deployment --without 'development' 'test'
