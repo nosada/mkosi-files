@@ -10,15 +10,19 @@ systemctl stop mastodon-streaming.service
 
 cd "${MASTODON_DIRECTORY}" || exit 1
 rm -rf "${MASTODON_DIRECTORY}/tmp/cache/bootsnap"
+rm -rf "${MASTODON_DIRECTORY}/node_modules"
+rm -rf "${MASTODON_DIRECTORY}/vendor"
 su -l ${MASTODON_USER} -c "git checkout $(su -l ${MASTODON_USER} -c "git status | grep modified | sed -e 's/.*modified: *//g' | sed -z 's/\n/ /g'"); \
 	git checkout ${MASTODON_BRANCH}; \
 	git pull -p; \
-	bundle install --path vendor/bundle; \
-	bundle pristine; \
+	rm -rf tmp/cache/bootsnap; \
+	bundle install; \
+	RAILS_ENV=production bundle exec rake tmp:cache:clear; \
 	RAILS_ENV=production bundle exec rails db:migrate; \
-	yarn install --pure-lockfile; \
+	yarn install; \
 	RAILS_ENV=production bundle exec rails assets:precompile; \
 	npx browserslist@latest --update-db"
+rm -rf "${MASTODON_DIRECTORY}"/.cache/*
 
 systemctl start mastodon-web.service
 systemctl start mastodon-sidekiq.service
