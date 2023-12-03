@@ -1,7 +1,6 @@
 CONTAINER = $(notdir $(shell pwd))
 MKOSI = mkosi.conf \
 		mkosi.extra \
-		mkosi.finalize \
 		mkosi.repart \
 		mkosi.nspawn
 NSPAWN = ${CONTAINER} \
