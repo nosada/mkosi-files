@@ -1,6 +1,8 @@
 *.tar.xz
 .mkosi-*
+*spawn.nspawn
 mkosi.cache/
 mkosi.builddir/
 *.cache-pre-dev
 *.cache-pre-inst
+mkosi.extra/etc/pacman.d/mirrorlist
