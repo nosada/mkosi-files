@@ -26,6 +26,7 @@ image: ${MKOSI} prepare aur
 
 clean: ${NSPAWN}
 	mkosi clean
+	rm -f ${CONTAINER}.nspawn
 	rm -f mkosi.extra/mirrorlist
 	rm -rf aurpkg
 	rm -rf ./mkosi-*

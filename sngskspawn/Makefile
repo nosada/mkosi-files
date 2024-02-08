@@ -22,6 +22,7 @@ image: ${MKOSI} prepare
 
 clean: ${NSPAWN}
 	mkosi clean
+	rm -f ${CONTAINER}.nspawn
 	rm -f mkosi.extra/etc/pacman.d/mirrorlist
 	rm -f mkosi.extra/etc/systemd/system/sngsk.info.service
 	rm -rf mkosi.extra/etc/nginx/nginx.conf

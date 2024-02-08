@@ -19,6 +19,7 @@ image: ${MKOSI} prepare
 
 clean: ${NSPAWN}
 	mkosi clean
+	rm -f ${CONTAINER}.nspawn
 	rm -f mkosi.extra/etc/pacman.d/mirrorlist
 	rm -rf ./mkosi-*
 	git clean -df
