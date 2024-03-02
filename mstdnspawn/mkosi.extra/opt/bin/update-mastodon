@@ -21,7 +21,7 @@ su -l ${MASTODON_USER} -c "git checkout $(su -l ${MASTODON_USER} -c "git status 
 	RAILS_ENV=production bundle exec rails db:migrate; \
 	yarn install; \
 	RAILS_ENV=production bundle exec rails assets:precompile; \
-	npx browserslist@latest --update-db"
+	npx update-browserslist-db@latest"
 rm -rf "${MASTODON_DIRECTORY}"/.cache/*
 
 systemctl start mastodon-web.service
