@@ -3,22 +3,22 @@
 
 [Mkosi](https://github.com/systemd/mkosi) configs and files for Arch Linux [systemd-nspawn](https://www.freedesktop.org/software/systemd/man/systemd-nspawn.html) images.
 
-Expected to be used on Arch Linux.
+Expected to be used in Arch Linux box.
 
 # How to use
 
-1. Install `base-devel`, `git` from official repository
-2. Install `mkosi` (or `mkosi-git`) from AUR
+1. Install `base-devel`, `git`
+2. Install `mkosi` (or `mkosi-git` in AUR)
 3. Clone this repository
 
-After cloning it, you could do belows:
+After cloning it, you can do the followings:
 
 ## Simple way
 
-Invoke `update-nspawn-images` as root:
+Run `update-nspawn-images` as root:
 
 ```bash
-update-nspawn-images CONTAINER OTHER_CONTAINER ...
+update-nspawn-images CONTAINER [OTHER_CONTAINER ...]
 ```
 
 where `CONTAINER` or `OTHER_CONTAINER` are nspawn container name in this repository.
@@ -26,8 +26,8 @@ where `CONTAINER` or `OTHER_CONTAINER` are nspawn container name in this reposit
 `update-nspawn-images` will do below:
 
 1. Build specified nspawn image
-2. Remove already existed one (nspawn container will be terminated)
-3. Install new nspawn image
+2. Remove existing image (nspawn container will be terminated)
+3. Install new image and config
 
 ## Complicated way
 
@@ -69,12 +69,12 @@ sudo make clean
 
 # Containers on this repository
 
-- `corespawn/`: Basic Arch container
+- `corespawn/`: Basic Arch LInux container
 - `mstdnspawn/`: Configuable Mastodon instance
-- `guispawn/`: Packaging X apps. Currently only web browsers (Tor browser & Chromium)
+- `guispawn/`: Packaging GUI apps. Currently only web browsers (Tor browser & Chromium)
 - `tlspawn/`: Packaging Tex Live utilities
 - `torspawn/`: Running Tor proxy (Tor + Privoxy; tcp:8118 opened)
-- `sngskspawn/`: Web ppp container used in [sngsk.info](https://sngsk.info)
+- `sngskspawn/`: Web app run as [sngsk.info](https://sngsk.info)
 
 ## Notes
 
