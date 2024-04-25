@@ -60,7 +60,7 @@ chown redis:redis /var/lib/redis/ -R
 # Set up PostgreSQL
 systemctl enable postgresql
 echo "----------------------------------------------------------------------------------------------------------------"
-echo "You must set up your DB inside the containt on fresh install."
+echo "You must set up your DB inside the container on fresh install."
 echo "See https://docs.joinmastodon.org/admin/ for more details."
 echo "----------------------------------------------------------------------------------------------------------------"
 chown postgres:postgres /var/lib/postgres/ -R
