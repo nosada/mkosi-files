@@ -14,7 +14,7 @@ prepare:
 	cp /etc/pacman.d/mirrorlist mkosi.extra/etc/pacman.d/mirrorlist
 
 image: ${MKOSI} prepare
-	[[ $(shell mkosi --version | awk '{print $$2}' | cut -d . -f 1) -lt 15 ]] && sed -e 's/\(Format=\).*/\1raw_btrfs/g' -i mkosi.conf || exit 0
+	[[ $(shell mkosi --version | awk '{print $$2}' | cut -d . -f 1 | cut -d '~' -f 1) -lt 15 ]] && sed -e 's/\(Format=\).*/\1raw_btrfs/g' -i mkosi.conf || exit 0
 	cp -f mkosi.extra/opt/sngsk.info/sngsk.info.service mkosi.extra/etc/systemd/system/sngsk.info.service
 	cp -f mkosi.extra/opt/sngsk.info/nginx/container/nginx.conf mkosi.extra/etc/nginx/nginx.conf
 	sed -i -e '/^pid/d' mkosi.extra/etc/nginx/nginx.conf

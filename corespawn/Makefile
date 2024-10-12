@@ -13,7 +13,7 @@ prepare:
 	cp /etc/pacman.d/mirrorlist mkosi.extra/etc/pacman.d/mirrorlist
 
 image: ${MKOSI} prepare
-	[[ $(shell mkosi --version | awk '{print $$2}' | cut -d . -f 1) -lt 15 ]] && sed -e 's/\(Format=\).*/\1raw_btrfs/g' -i mkosi.conf || exit 0
+	[[ $(shell mkosi --version | awk '{print $$2}' | cut -d . -f 1 | cut -d '~' -f 1) -lt 15 ]] && sed -e 's/\(Format=\).*/\1raw_btrfs/g' -i mkosi.conf || exit 0
 	mkosi --mirror ${MIRROR} build
 
 clean: ${NSPAWN}
