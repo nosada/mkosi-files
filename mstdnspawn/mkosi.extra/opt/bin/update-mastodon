@@ -3,6 +3,7 @@
 MASTODON_DIRECTORY="/opt/mastodon"
 MASTODON_USER="mastodon"
 MASTODON_BRANCH="main"
+RUBY_VERSION=3.4.2	# Specify your favorite version
 
 systemctl stop mastodon-web.service
 systemctl stop mastodon-sidekiq.service
@@ -16,11 +17,23 @@ su -l ${MASTODON_USER} -c "git checkout $(su -l ${MASTODON_USER} -c "git status 
 	git checkout ${MASTODON_BRANCH}; \
 	git pull -p; \
 	rm -rf tmp/cache/bootsnap; \
-	bundle install; \
-	RAILS_ENV=production bundle exec rake tmp:cache:clear; \
-	RAILS_ENV=production bundle exec rails db:migrate; \
-	yarn install; \
-	RAILS_ENV=production bundle exec rails assets:precompile; \
+	TMPDIR=${MASTODON_DIRECTORY}/.cache/rbenv rbenv install -s || rbenv local ${RUBY_VERSION}; \
+	rm -rf .cache/rbenv; \
+	/opt/mastodon/.rbenv/shims/bundle install; \
+	RAILS_ENV=production /opt/mastodon/.rbenv/shims/bundle exec rake tmp:cache:clear; \
+	RAILS_ENV=production /opt/mastodon/.rbenv/shims/bundle exec rails db:migrate"
+
+systemctl stop mastodon-web.service
+systemctl stop mastodon-sidekiq.service
+systemctl stop mastodon-streaming.service
+
+# Get whole system memory (RAM + swap) and pass "moderated" memory size to Node.js
+# I'll use simple & lazy way for moderation: just reserve 1 GiB for any other processes
+# NOTE: meminfo returns numbers in KB but '--max-old-space-size' requires value in MB
+TOTAL_MEM_SIZE=$(grep -E '(Mem|Swap)Total' /proc/meminfo | awk '{s+=$2} END {print int(s/1024) - 1024}')
+su -l ${MASTODON_USER} -c "yes | yarn install; \
+	export NODE_OPTIONS=--max-old-space-size=${TOTAL_MEM_SIZE}; \
+	RAILS_ENV=production /opt/mastodon/.rbenv/shims/bundle exec rails assets:precompile; \
 	npx update-browserslist-db@latest"
 rm -rf "${MASTODON_DIRECTORY}"/.cache/*
 
