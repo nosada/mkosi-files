@@ -5,7 +5,7 @@ MASTODON_USER="mastodon"
 MASTODON_BRANCH="main"
 RUBY_VERSION=3.4.2
 
-TOTAL_MEM_SIZE=$(grep -E '(Mem|Swap)Total' /proc/meminfo | awk '{s+=$2} END {print int(s/1024) - 1536}')
+TOTAL_MEM_SIZE=$(grep -E '(Mem|Swap)Total' /proc/meminfo | awk '{s+=$2} END {print int(s/1024)}')
 
 cd "${MASTODON_DIRECTORY}" || exit 1
 rm -rf "${MASTODON_DIRECTORY}/node_modules"
