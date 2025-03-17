@@ -1,0 +1,27 @@
+#!/bin/bash
+
+MASTODON_DIRECTORY="/opt/mastodon"
+MASTODON_USER="mastodon"
+MASTODON_BRANCH="main"
+RUBY_VERSION=3.4.2
+
+systemctl stop mastodon-web.service
+systemctl stop mastodon-sidekiq.service
+systemctl stop mastodon-streaming.service
+
+cd "${MASTODON_DIRECTORY}" || exit 1
+rm -rf "${MASTODON_DIRECTORY}/tmp/cache/bootsnap"
+rm -rf "${MASTODON_DIRECTORY}/vendor"
+su -l ${MASTODON_USER} -c "git checkout $(su -l ${MASTODON_USER} -c "git status | grep modified | sed -e 's/.*modified: *//g' | sed -z 's/\n/ /g'"); \
+	git checkout ${MASTODON_BRANCH}; \
+	git pull -p; \
+	rm -rf tmp/cache/bootsnap; \
+	TMPDIR=${MASTODON_DIRECTORY}/.cache/rbenv rbenv install -s || rbenv local ${RUBY_VERSION}; \
+	rm -rf .cache/rbenv; \
+	/opt/mastodon/.rbenv/shims/bundle install; \
+	RAILS_ENV=production /opt/mastodon/.rbenv/shims/bundle exec rake tmp:cache:clear; \
+	RAILS_ENV=production /opt/mastodon/.rbenv/shims/bundle exec rails db:migrate"
+
+systemctl restart mastodon-web.service
+systemctl restart mastodon-sidekiq.service
+systemctl restart mastodon-streaming.service
