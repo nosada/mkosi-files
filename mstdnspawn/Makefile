@@ -25,7 +25,7 @@ clean: ${NSPAWN}
 	git reset --hard
 
 install: ${NSPAWN}
-	machinectl import-raw ${CONTAINER}
+	machinectl import-tar ${CONTAINER}
 	install -Dm644 -o root -g root \
 		${CONTAINER}.nspawn /etc/systemd/nspawn/${CONTAINER}.nspawn
 
