@@ -36,4 +36,5 @@ install: ${NSPAWN}
 
 uninstall:
 	machinectl show ${CONTAINER} > /dev/null && machinectl stop ${CONTAINER} || echo "${CONTAINER} not running; it's OK to uninstall"
-	machinectl show ${CONTAINER} > /dev/null 2> /dev/null || machinectl show-image ${CONTAINER} > /dev/null && machinectl remove ${CONTAINER}
+	# `machinectl status` requires more time & resource to show; it's useful to "delay" checking that the container stoped correctly
+	machinectl status ${CONTAINER} > /dev/null 2> /dev/null || machinectl show-image ${CONTAINER} > /dev/null && machinectl remove ${CONTAINER}
