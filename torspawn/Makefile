@@ -29,4 +29,5 @@ install: ${NSPAWN}
 		${CONTAINER}.nspawn /etc/systemd/nspawn/${CONTAINER}.nspawn
 
 uninstall:
+	machinectl stop ${CONTAINER}
 	machinectl remove ${CONTAINER}

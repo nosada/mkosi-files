@@ -5,39 +5,6 @@ function help() {
 	exit 1
 }
 
-function stop_container_if_running() {
-	CONTAINER=$1
-	machinectl status "$CONTAINER" 1> /dev/null 2> /dev/null
-	CONTAINER_RUNNING=$?
-	if [ $CONTAINER_RUNNING -eq 0 ]; then
-		while true; do
-			machinectl stop "$CONTAINER"
-			CONTAINER_STOPPED=$?
-			if [ $CONTAINER_STOPPED -eq 0 ]; then
-				break
-			fi
-		done
-	fi
-}
-
-function remove_container_if_exists() {
-	CONTAINER=$1
-	machinectl image-status "$CONTAINER" 1> /dev/null 2> /dev/null
-	CONTAINER_EXISTS=$?
-	if [ $CONTAINER_EXISTS -eq 0 ]; then
-		machinectl remove "$CONTAINER"
-	fi
-}
-
-function install_container() {
-	CONTAINER=$1
-	make
-	stop_container_if_running "$CONTAINER"
-	remove_container_if_exists "$CONTAINER"
-	make install
-	make clean
-}
-
 if [ $# -eq 0 ]; then
 	help
 else
@@ -48,5 +15,8 @@ fi
 for CONTAINER in "${CONTAINERS[@]}"; do
 	echo "Build and install $CONTAINER"
 	cd "$NSPAWN_FILES_DIR/$CONTAINER" || exit 1
-	install_container "$CONTAINER"
+	make
+	make uninstall
+	make install
+	make clean
 done
