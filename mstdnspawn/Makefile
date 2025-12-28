@@ -25,10 +25,10 @@ clean: ${NSPAWN}
 	git reset --hard
 
 install: ${NSPAWN}
-	machinectl import-tar ${CONTAINER}
+	importctl -m import-tar ${CONTAINER}
 	install -Dm644 -o root -g root \
 		${CONTAINER}.nspawn /etc/systemd/nspawn/${CONTAINER}.nspawn
 
 uninstall:
-	machinectl stop ${CONTAINER}
-	machinectl remove ${CONTAINER}
+	machinectl show ${CONTAINER} > /dev/null && machinectl stop ${CONTAINER}
+	machinectl show-image ${CONTAINER} > /dev/null && machinectl remove ${CONTAINER}
