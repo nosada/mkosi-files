@@ -35,5 +35,5 @@ install: ${NSPAWN}
 		${CONTAINER}.nspawn /etc/systemd/nspawn/${CONTAINER}.nspawn
 
 uninstall:
-	machinectl show ${CONTAINER} > /dev/null && machinectl stop ${CONTAINER}
+	machinectl show ${CONTAINER} > /dev/null && machinectl stop ${CONTAINER} || echo "${CONTAINER} not running; it's OK to uninstall"
 	machinectl show ${CONTAINER} > /dev/null 2> /dev/null || machinectl show-image ${CONTAINER} > /dev/null && machinectl remove ${CONTAINER}
