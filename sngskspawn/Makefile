@@ -36,4 +36,4 @@ install: ${NSPAWN}
 
 uninstall:
 	machinectl show ${CONTAINER} > /dev/null && machinectl stop ${CONTAINER}
-	machinectl show-image ${CONTAINER} > /dev/null && machinectl remove ${CONTAINER}
+	machinectl show ${CONTAINER} > /dev/null 2> /dev/null || machinectl show-image ${CONTAINER} > /dev/null && machinectl remove ${CONTAINER}
